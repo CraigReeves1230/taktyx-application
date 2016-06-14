@@ -1,0 +1,46 @@
+<% content_for :title do %>Get Stuff Done<% end %>
+<div class="container home-index">
+  <form data-ng-controller="homeSearchCtrl" data-ng-submit="doSearch($event)" method="get" action="/search">
+    <div class="search-section row">
+      <div class="col-sm-offset-3 col-sm-6">
+        <div data-ng-class="(errors.keyword ? 'has-error' : '')" class="form-group">
+          <%= image_tag image_url("logo1.png"), title: 'Taktyx', alt: 'Taktyx' %>
+          <input data-ng-model="keyword" class="form-control search-input" type="text" placeholder="Search"/>
+          <span class="control-label" data-ng-show="(errors.keyword)" data-ng-bind="errors.keyword"></span>
+        </div>
+        <div class="form-inline source-location-section">
+          <ul>
+            <li><input value="present" data-ng-model="source_location" type="radio" name="source-location"/> Search from present location</li>
+            <li><input value="address" data-ng-model="source_location" type="radio" name="source-location"/> Search from address</li>
+          </ul>
+        </div>
+        <div data-ng-cloak data-ng-show="(source_location == 'address')" class="origin-location-address">
+          <div class="panel panel-default">
+            <div class="panel-heading">Origin Location Address</div>
+            <div class="panel-body">
+              <p>From what address would you like to find services? If you don't know the whole address, you can just use the Zip Code</p>
+              <div class="form-group">
+                <input data-ng-model="address.address" type="text" class="form-control" placeholder="Address"/>
+              </div>
+              <div data-ng-class="(errors.zipcode ? 'has-error' : '')" class="form-group">
+                <input data-ng-model="address.zip_code" type="text" placeholder="Zip Code (Required)" class="form-control"/>
+                <span class="control-label" data-ng-show="(errors.zipcode)" data-ng-bind="errors.zipcode"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div data-ng-show="(source_location == 'present')" class="origin-location-address">
+          <div class="panel panel-default">
+            <div class="panel-heading">Your Detected Location</div>
+            <div class="panel-body">
+              <h4>Roswell, GA 30096</h4>
+            </div>
+          </div>
+        </div>
+        <div class="form-inline search-button-section">
+          <button type="submit" class="btn btn-success search-button"><i class="fa fa-search"></i> Search</button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,129 @@
+<% content_for :title do %>Search Results<% end %>
+<div class="container search-results">
+  <div class="logo-section">
+    <%= image_tag image_url("logo1.png"), title: 'Taktyx', alt: 'Taktyx' %>
+  </div>
+  <div class="row">
+    <div class="col-sm-6">
+      <div data-ng-controller="searchResultSearchCtrl" class="search-section">
+        <div class="form-group">
+          <input data-ng-model="keyword" type="text" class="form-control" placeholder="Search"/>
+        </div>
+        <div class="form-inline source-location-section">
+          <ul>
+            <li><input value="present" data-ng-model="source_location" checked="checked" type="radio" name="source-location"/> Search from present location</li>
+            <li><input value="address" data-ng-model="source_location" type="radio" name="source-location"/> Search from address</li>
+          </ul>
+        </div>
+        <div data-ng-cloak data-ng-show="(source_location == 'address')" class="origin-location-address">
+          <div class="form-group">
+            <input data-ng-model="address.address" type="text" class="form-control" placeholder="Address"/>
+          </div>
+          <div data-ng-class="(errors.zipcode ? 'has-error' : '')" class="form-group">
+            <input data-ng-model="address.zip_code" type="text" placeholder="Zip Code (Required)" class="form-control"/>
+            <span class="control-label" data-ng-show="(errors.zipcode)" data-ng-bind="errors.zipcode"></span>
+          </div>
+        </div>
+        <div class="form-group">
+          <button class="btn btn-success"><i class="fa fa-search"></i> Search</button>
+        </div>
+      </div>
+      <div class="mass-interact-section">
+        <div class="panel panel-default">
+          <div class="panel-heading">Interaction Option</div>
+          <div class="panel-body">
+            <div class="interact-option">
+              <h4>Send A Takt</h4>
+              <p>Send a Takt to all of the selected services on the right. A takt is a short message you send to a service.
+                You make ask a question about services they offer, or inform them about what you're looking for. Your personal information is never
+              sent to any of these services and they are only allowed to give one response for every inquiry you make.</p>
+              <button class="btn btn-success"><i class="fa fa-commenting"></i> Send Takts</button>
+            </div>
+            <div class="interact-option">
+              <h4>Block Services</h4>
+              <p>Block all selected services on the right. By blocking a service, you will no longer be able to send Takts to
+              the service and they will no longer show up in searches. To unblock searches, go to <a href="">My Account</a>
+              under "Blocked Services" and remove the services you want to unblock.</p>
+              <button class="btn btn-danger"><i class="fa fa-ban"></i> Block Services</button>
+            </div>
+            <div class="interact-option">
+              <h4>Add Services To Favorites</h4>
+              <p>By adding services to your favorites, you can quickly check if they're available and open for business
+              by simply clicking on the <a href="">My Favorites</a> menu option on the top menu navigation.</p>
+              <button class="btn btn-info"><i class="fa fa-heart"></i> Add Services To Favorites</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-6">
+      <h1>Search Results (24 Listings)</h1>
+      <div class="search-result">
+        <input type="checkbox"/>
+        <a href="" class="search-result-img-link">
+          <img src="http://lorempixel.com/100/100"/>
+        </a>
+        <div class="search-result-info">
+          <h5><a href="">Title 1</a></h5>
+          <p>Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>
+          <div class="distance">Distance: 4.23 miles away.</div>
+          <div class="status">Status: <i class="fa fa-circle available"></i> Available</div>
+          <div class="ratings">Ratings: 3/5 <span class="rating"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></span></div>
+        </div>
+        <div class="form-inline result-buttons">
+          <button class="btn btn-success"><i class="fa fa-commenting"></i> Send Takt</button>
+          <button class="btn btn-danger"><i class="fa fa-ban"></i> Block</button>
+          <button class="btn btn-info"><i class="fa fa-heart"></i> Favorite</button>
+        </div>
+      </div>
+
+      <div class="search-result">
+        <input type="checkbox"/>
+        <a href="" class="search-result-img-link">
+          <img src="http://lorempixel.com/102/102"/>
+        </a>
+        <div class="search-result-info">
+          <h5><a href="">Title 1</a></h5>
+          <p>Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>
+          <div class="distance">Distance: 4.23 miles away.</div>
+          <div class="status">Status: <i class="fa fa-circle available"></i> Available</div>
+          <div class="ratings">Ratings: 3/5 <span class="rating"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></span></div>
+        </div>
+        <div class="form-inline result-buttons">
+          <button class="btn btn-success"><i class="fa fa-commenting"></i> Send Takt</button>
+          <button class="btn btn-danger"><i class="fa fa-ban"></i> Block</button>
+          <button class="btn btn-info"><i class="fa fa-heart"></i> Favorite</button>
+        </div>
+      </div>
+
+      <div class="search-result">
+        <input type="checkbox"/>
+        <a href="" class="search-result-img-link">
+          <img src="http://lorempixel.com/101/101"/>
+        </a>
+        <div class="search-result-info">
+          <h5><a href="">Title 1</a></h5>
+          <p>Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>
+          <div class="distance">Distance: 4.23 miles away.</div>
+          <div class="status">Status: <i class="fa fa-circle available"></i> Available</div>
+          <div class="ratings">Ratings: 4.5/5 <span class="rating"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-half"></i></span></div>
+        </div>
+        <div class="form-inline result-buttons">
+          <button class="btn btn-success"><i class="fa fa-commenting"></i> Send Takt</button>
+          <button class="btn btn-danger"><i class="fa fa-ban"></i> Block</button>
+          <button class="btn btn-info"><i class="fa fa-heart"></i> Favorite</button>
+        </div>
+      </div>
+      <ul class="pagination">
+        <li><a href="">1</a></li>
+        <li><a href="">2</a></li>
+        <li><a href="">3</a></li>
+        <li>
+          <a href="#" aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

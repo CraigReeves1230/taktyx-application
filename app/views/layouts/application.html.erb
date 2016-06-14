@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Taktyx | <%= yield(:title) %></title>
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  <script>
+      window.taktyx = window.taktyx || {};
+      window.taktyx.datalayer = window.taktyx.datalayer || {};
+      <%= yield(:datalayer) %>
+  </script>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <%= csrf_meta_tags %>
+</head>
+<body data-ng-app="app">
+<nav class="top-nav">
+  <ul>
+    <% if auth_user %>
+        <li>Hello <%= auth_user.screen_name %></li>
+        <li><a href=""><i class="fa fa-user"></i> My Account</a></li>
+        <li><a href="<%= logout_path %>"><i class="fa fa-sign-out"></i> Sign Out</a></li>
+    <% else %>
+        <li><a href="<%= home_path %>"><i class="fa fa-home"></i> Home</a></li>
+        <li><a href="<%= login_path %>"><i class="fa fa-sign-in"></i> Sign In</a></li>
+        <li><a href="<%= user_register_path %>"><i class="fa fa-user"></i> Create an Account</a></li>
+    <% end %>
+  </ul>
+</nav>
+<section id="main">
+  <%= yield %>
+</section>
+</body>
+</html>
