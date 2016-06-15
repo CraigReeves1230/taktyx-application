@@ -155,7 +155,7 @@ DEPENDENCIES
   sdoc (~> 0.4.0)
   spring
   turbolinks
-  tzinfo
+  tzinfo-data
   uglifier (>= 1.3.0)
   web-console (~> 2.0)
 
