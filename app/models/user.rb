@@ -1,5 +1,9 @@
 class User < ActiveRecord::Base
 
+  # Virtual attributes
+  attr_accessor :remember_token
+
+  # Password and password confirmation authentication (for Bcrypt)
   has_secure_password
 
   # Validations
@@ -18,8 +22,15 @@ class User < ActiveRecord::Base
   validates :email, uniqueness: {message: "There is already a user with this email address in our records", case_sensitive: false}
 
   # Function to create tokens for remembering and email activation
-  def User.new_token
+  def User.create_token
     SecureRandom.urlsafe_base64
+  end
+
+  # Creates a hash digest of a given string. This is a class function. No need to understand this code.
+  def User.create_digest(string)
+    cost = ActiveModel::SecurePassword.min_cost ? BCrypt::Engine::MIN_COST :
+        BCrypt::Engine.cost
+    BCrypt::Password.create(string, cost: cost)
   end
 
   # Returns true if the given token matches the remember or email activation digest in the database. The first parameter is a
@@ -33,6 +44,11 @@ class User < ActiveRecord::Base
     BCrypt::Password.new(digest).is_password?(token)
   end
 
-
+  # Remembers a user by saving the remember token in the remember digest
+  def remember
+    self.remember_token = User.create_token  # create new token and assign it to remember token
+    # update the remember_digest in the database with a B-Crypt hash digest of the remember token
+    update_attribute(:remember_digest, User.create_digest(remember_token))
+  end
 
 end

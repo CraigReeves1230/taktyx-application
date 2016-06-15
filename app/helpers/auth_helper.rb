@@ -23,6 +23,14 @@ module AuthHelper
     auth_user
   end
 
-
+  # Remembers user in a current session
+  def remember(user)
+    #remembers a user in a persistent session. Stores both the id and the token in cookies.
+    def remember(user)
+      user.remember
+      cookies.permanent.signed[:user_id] = user.id
+      cookies.permanent[:remember_token] = user.remember_token
+    end
+  end
 
 end
