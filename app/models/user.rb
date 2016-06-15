@@ -17,4 +17,22 @@ class User < ActiveRecord::Base
   validates :email, format: {with: /[\w\d\.]+\@[\w\.]+\.[\w\d]/, message: "Please provide a valid email address"}
   validates :email, uniqueness: {message: "There is already a user with this email address in our records", case_sensitive: false}
 
+  # Function to create tokens for remembering and email activation
+  def User.new_token
+    SecureRandom.urlsafe_base64
+  end
+
+  # Returns true if the given token matches the remember or email activation digest in the database. The first parameter is a
+  # string that determines the type of token it is. The second is the token itself.
+  def token_authenticated?(attribute = "remember", token)
+    # determine what kind of token it is
+    digest = send("#{attribute}_digest")
+    # Prevent problems with logging out in one browser but staying logged in in another
+    return false if digest.nil?
+    # See if token matches digest
+    BCrypt::Password.new(digest).is_password?(token)
+  end
+
+
+
 end
