@@ -25,6 +25,15 @@ class AuthController < ApplicationController
       if user && user.authenticate(params[:auth][:password])
         # Log user in
         session[:user_id] = user.id
+
+        # Remember user if the checkbox is checked
+        if params[:auth][:remember]
+          remember(user)
+        else
+          forget(user)
+        end
+
+        # Authentication success
         render json: {:has_errors => false, :data => user}
       else
         # Authentication failed
@@ -53,6 +62,7 @@ class AuthController < ApplicationController
   def logout
 
     # Delete the session to log the user out
+    forget(auth_user)
     session.clear
     redirect_to :back
   end

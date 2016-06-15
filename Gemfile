@@ -15,6 +15,9 @@ gem 'coffee-rails', '~> 4.1.0'
 # gem 'therubyracer', platforms: :ruby
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw]
 
+# Highly useful gem for checkboxes in particular
+gem 'to_boolean', '1.0.2'
+
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
 
