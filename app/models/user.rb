@@ -51,4 +51,9 @@ class User < ActiveRecord::Base
     update_attribute(:remember_digest, User.create_digest(remember_token))
   end
 
+  # Forgets a user by removing the remember token in the remember digest
+  def forget
+    update_attribute(:remember_digest, nil)
+  end
+
 end

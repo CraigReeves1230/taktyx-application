@@ -14,7 +14,7 @@
 <body data-ng-app="app">
 <nav class="top-nav">
   <ul>
-    <% if auth_user %>
+    <% if logged_in? %>
         <li>Hello <%= auth_user.screen_name %></li>
         <li><a href=""><i class="fa fa-user"></i> My Account</a></li>
         <li><a href="<%= logout_path %>"><i class="fa fa-sign-out"></i> Sign Out</a></li>
