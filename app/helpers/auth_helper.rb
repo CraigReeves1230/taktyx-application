@@ -17,7 +17,7 @@ module AuthHelper
 
   # Determines if a user is the current user
   def auth_user?(user)
-    !auth_user == user
+    auth_user == user
   end
 
   # Determines if a user is logged in
@@ -28,6 +28,10 @@ module AuthHelper
   # Another term for auth_user
   def current_user
     auth_user
+  end
+
+  def current_user?
+    auth_user?
   end
 
   #remembers a user in a persistent session. Stores both the id and the token in cookies.
