@@ -29,9 +29,15 @@ module AuthHelper
   def current_user
     auth_user
   end
+  def current_user?(user)
+    auth_user?(user)
+  end
 
-  def current_user?
-    auth_user?
+  # Require logged in user
+  def require_logged_in
+    unless logged_in?
+      redirect_to home_url
+    end
   end
 
   #remembers a user in a persistent session. Stores both the id and the token in cookies.

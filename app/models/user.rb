@@ -1,7 +1,7 @@
 class User < ActiveRecord::Base
 
   # Virtual attributes
-  attr_accessor :remember_token
+  attr_accessor :remember_token, :reset_token
 
   # Password and password confirmation authentication (for Bcrypt)
   has_secure_password

@@ -17,5 +17,6 @@ Rails.application.routes.draw do
   post '/user/register' => 'users#do_save_user', as: 'save_user'
   get '/search' => 'search#results', as: 'search_results'
   get '/user/password-reset' => 'password_resets#new', as: 'new'
+  post 'password_resets/create' => 'password_resets#create', as: 'create'
 
 end
