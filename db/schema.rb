@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160616042944) do
+ActiveRecord::Schema.define(version: 20160616080359) do
 
   create_table "addresses", force: :cascade do |t|
     t.string   "line_1"
@@ -135,6 +135,7 @@ ActiveRecord::Schema.define(version: 20160616042944) do
     t.string   "role",            default: "member"
     t.string   "remember_digest"
     t.string   "reset_digest"
+    t.datetime "reset_sent_at"
   end
 
 end

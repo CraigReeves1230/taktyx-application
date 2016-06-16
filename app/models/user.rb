@@ -44,6 +44,16 @@ class User < ActiveRecord::Base
     BCrypt::Password.new(digest).is_password?(token)
   end
 
+  # Emails a user their password reset information
+  def email_password_reset_link
+    UserMailer.reset_password(self).deliver_now
+  end
+
+  # Returns true if the user's reset password link has NOT expired (2 hours)
+  def reset_link_still_fresh?
+    self.reset_sent_at > 2.hours.ago
+  end
+
   # Remembers a user by saving the remember token in the remember digest
   def remember
     self.remember_token = User.create_token  # create new token and assign it to remember token
