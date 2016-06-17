@@ -1,5 +1,8 @@
 class User < ActiveRecord::Base
 
+  # Associations
+  has_many :services
+
   # Virtual attributes
   attr_accessor :remember_token
 
@@ -18,7 +21,7 @@ class User < ActiveRecord::Base
   validates :password, length: {minimum: 6, message: "The password must be at least 6 characters in length"}
   validates :password_confirmation, presence: {message: "Please repeat the password to confirm"}
   validates :email, presence: {message: "Please provide your email address."}
-  validates :email, format: {with: /[\w\d\.]+\@[\w\.]+\.[\w\d]/, message: "Please provide a valid email address"}
+  validates :email, email: {message: "Please provide a valid email address"}
   validates :email, uniqueness: {message: "There is already a user with this email address in our records", case_sensitive: false}
 
   # Function to create tokens for remembering and email activation

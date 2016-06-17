@@ -1,6 +1,7 @@
 # AuthController
 #
 # @author Christopher Reeves
+# @author Craig Reeves
 # @copyright (c) 2016 by Taktyx
 
 #

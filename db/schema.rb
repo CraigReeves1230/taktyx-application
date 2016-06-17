@@ -11,13 +11,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160615041634) do
+ActiveRecord::Schema.define(version: 20160616044458) do
 
   create_table "addresses", force: :cascade do |t|
     t.string   "line_1",      limit: 255
     t.string   "line_2",      limit: 255
     t.string   "city",        limit: 255
-    t.string   "state",       limit: 255
     t.string   "zip_code",    limit: 255
     t.datetime "created_at",              null: false
     t.datetime "updated_at",              null: false
@@ -40,6 +39,7 @@ ActiveRecord::Schema.define(version: 20160615041634) do
     t.string   "address",    limit: 255
     t.datetime "created_at",             null: false
     t.datetime "updated_at",             null: false
+    t.string   "status",     limit: 255
   end
 
   add_index "ip_addresses", ["address"], name: "index_ip_addresses_on_address", using: :btree
@@ -83,17 +83,6 @@ ActiveRecord::Schema.define(version: 20160615041634) do
     t.integer  "service_id", limit: 4
   end
 
-  create_table "rel_user_services", force: :cascade do |t|
-    t.integer  "sort_order", limit: 4, default: 0
-    t.datetime "created_at",                       null: false
-    t.datetime "updated_at",                       null: false
-    t.integer  "user_id",    limit: 4
-    t.integer  "service_id", limit: 4
-  end
-
-  add_index "rel_user_services", ["service_id"], name: "index_rel_user_services_on_service_id", using: :btree
-  add_index "rel_user_services", ["user_id"], name: "index_rel_user_services_on_user_id", using: :btree
-
   create_table "service_ratings", force: :cascade do |t|
     t.float    "score",      limit: 24,    default: 0.0
     t.text     "comment",    limit: 65535
@@ -108,19 +97,27 @@ ActiveRecord::Schema.define(version: 20160615041634) do
   add_index "service_ratings", ["user_id"], name: "index_service_ratings_on_user_id", using: :btree
 
   create_table "services", force: :cascade do |t|
-    t.string   "name",        limit: 255
-    t.boolean  "is_active",                 default: false
+    t.string   "name",                limit: 255
+    t.boolean  "is_published",                      default: true
     t.datetime "last_active"
-    t.string   "status",      limit: 255
-    t.text     "description", limit: 65535
-    t.datetime "created_at",                                null: false
-    t.datetime "updated_at",                                null: false
-    t.integer  "category_id", limit: 4
-    t.integer  "address_id",  limit: 4
+    t.boolean  "is_sharing_allowed",                default: true
+    t.boolean  "are_ratings_allowed",               default: true
+    t.boolean  "can_receive_takts",                 default: true
+    t.string   "status",              limit: 255
+    t.text     "description",         limit: 65535
+    t.text     "keywords",            limit: 65535
+    t.datetime "created_at",                                       null: false
+    t.datetime "updated_at",                                       null: false
+    t.integer  "category_id",         limit: 4
+    t.string   "email",               limit: 255,                  null: false
+    t.string   "phone",               limit: 255,                  null: false
+    t.integer  "user_id",             limit: 4
+    t.integer  "address_id",          limit: 4
   end
 
   add_index "services", ["address_id"], name: "index_services_on_address_id", using: :btree
   add_index "services", ["category_id"], name: "index_services_on_category_id", using: :btree
+  add_index "services", ["user_id"], name: "index_services_on_user_id", using: :btree
 
   create_table "users", force: :cascade do |t|
     t.string   "first_name",      limit: 255
@@ -143,4 +140,5 @@ ActiveRecord::Schema.define(version: 20160615041634) do
   add_foreign_key "service_ratings", "users"
   add_foreign_key "services", "addresses"
   add_foreign_key "services", "categories"
+  add_foreign_key "services", "users"
 end

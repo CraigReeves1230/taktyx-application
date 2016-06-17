@@ -1,0 +1,109 @@
+<% content_for :title do %>My Services<% end %>
+<% content_for :datalayer do%>
+<% end %>
+<div class="container my-services-section">
+  <h1><i class="fa fa-suitcase"></i> My Services</h1>
+  <p>Services allow you or business to offer goods and services to targeted users
+  who are looking for what you offer.</p>
+  <ul class="nav nav-tabs">
+    <li class="active create-tab"><a data-toggle="tab" href="#create">Create</a></li>
+    <li><a class="services-tab" data-toggle="tab" href="#services">Services (0)</a></li>
+  </ul>
+
+  <!-- Create Tab -->
+  <div class="tab-content">
+    <div data-csrf="<%= form_authenticity_token %>" data-ng-controller="createServiceCtrl" class="tab-pane fade in active" id="create">
+      <form data-ng-submit="doSubmit($event)">
+        <div class="row">
+          <div class="col-sm-6">
+            <h4>Basic Information</h4>
+            <p><i class="fa fa-info-circle"></i> It is important that the information you provide about your service or business
+            is accurate to ensure that users can find it in the search.</p>
+            <div class="form-group">
+              <label>Services Category</label>
+              <select data-ng-options="category as category.name for category in categories track by category.id" data-ng-model="service.category" class="form-control">
+              </select>
+            </div>
+            <div data-ng-class="(errors.name ? 'has-error' : '')" class="form-group">
+              <label>Service/Business Name</label>
+              <input data-ng-model="service.name" class="form-control" placeholder="Name"/>
+              <span class="control-label" data-ng-bind="errors.name[0]"></span>
+            </div>
+            <div data-ng-class="(errors.email ? 'has-error' : '')" class="form-group">
+              <label>Service Email</label>
+              <input data-ng-model="service.email" type="text" class="form-control" placeholder="Service Email"/>
+              <span class="control-label" data-ng-bind="errors.email[0]"></span>
+            </div>
+            <div data-ng-class="(errors.phone ? 'has-error' : '')" class="form-group">
+              <label>Contact Phone Number (xxx) xxx - xxxx</label>
+              <input data-ng-model="service.phone" type="tel" class="form-control" placeholder="Contact Phone Number"/>
+              <span class="control-label" data-ng-bind="errors.phone[0]"></span>
+            </div>
+            <div data-ng-class="(errors.description ? 'has-error' : '')" class="form-group">
+              <label>Description</label> (0/300)
+              <p>Write a brief description of the goods/service you offer.</p>
+              <div class="form-group">
+                <textarea data-ng-model="service.description" maxlength="300" rows="5" class="form-control"></textarea>
+                <span class="control-label" data-ng-bind="errors.description[0]"></span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Keywords</label>
+              <p>Comma separated keywords allow your service to be found in the search. Put in keywords that
+              are relevant to the goods and services you Offer. <em>(Example: chinese food, sushi, korean beef)</em></p>
+              <div data-ng-class="(errors.keywords ? 'has-error' : '')" class="form-group">
+                <textarea data-ng-model="service.keywords" maxlength="300" rows="5" class="form-control"></textarea>
+                <span class="control-label" data-ng-bind="errors.keywords[0]"></span>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <h4>Location Information</h4>
+            <p><i class="fa fa-info-circle"></i> The address of service is very important for users near your
+            location can find you. Therefore, please make sure your address is always kept up-to-date and that it
+            is accurate.</p>
+            <div data-ng-class="(errors.line_1 ? 'has-error' : '')" class="form-group">
+              <label>Address Line 1</label>
+              <input data-ng-model="service.address_line_1" type="text" placeholder="Address Line 1" class="form-control"/>
+              <span class="control-label" data-ng-bind="errors.line_1[0]"></span>
+            </div>
+            <div class="form-group">
+              <label>Address Line 2</label>
+              <input data-ng-model="service.address_line_2" type="text" placeholder="Address Line 2" class="form-control"/>
+            </div>
+            <div data-ng-class="(errors.city ? 'has-error' : '')" class="form-group">
+              <label>City</label>
+              <input data-ng-model="service.address_city" type="text" placeholder="City" class="form-control"/>
+              <span class="control-label" data-ng-bind="errors.city[0]"></span>
+            </div>
+            <div data-ng-class="(errors.zip_code ? 'has-error' : '')" class="form-group">
+              <label>Zip Code</label>
+              <input data-ng-model="service.zip_code" type="text" class="form-control" placeholder="Zip Code"/>
+              <span class="control-label" data-ng-bind="errors.zip_code[0]"></span>
+            </div>
+            <h4>Service Settings</h4>
+            <div class="panel panel-default">
+              <div class="panel-heading"><i class="fa fa-lock"></i> Privacy Settings</div>
+              <div class="panel-body">
+                <ul class="list-group">
+                  <li class="list-group-item"><input data-ng-model="service.is_published" type="checkbox"/> Publish My Service In Search</li>
+                  <li class="list-group-item"><input data-ng-model="service.are_ratings_allowed" type="checkbox"/> Allow Ratings <em>(Increases search ranking)</em></li>
+                  <li class="list-group-item"><input data-ng-model="service.is_sharing_allowed" type="checkbox"/> Allow users to share my service</li>
+                  <li class="list-group-item"><input data-ng-model="service.can_receive_takts" type="checkbox"/> Allow users to send Takts <em>(Increases search ranking)</em></li>
+                </ul>
+              </div>
+            </div>
+            <div class="form-group">
+              <button class="btn btn-success"><i class="fa fa-save"></i> Save Service</button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <!-- Services Tab -->
+    <div data-ng-controller="userServicesListCtrl" class="tab-pane fade" id="services">
+      <p>There are currently no services you're offering.</p>
+    </div>
+  </div>
+</div>
