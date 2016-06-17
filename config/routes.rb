@@ -1,6 +1,14 @@
 #Routes
 Rails.application.routes.draw do
 
+  get 'password_resets/new'
+
+  get 'password_resets/edit'
+
+  post 'password_resets/create'
+
+  post 'password_resets/update'
+
   root 'home#index', as: 'home'
 
   get '/user/terms-of-service', to: redirect('/terms_of_service.html'), as: 'terms_of_service'
@@ -10,5 +18,6 @@ Rails.application.routes.draw do
   get '/user/register' => 'users#register', as: 'user_register'
   post '/user/register' => 'users#do_save_user', as: 'save_user'
   get '/search' => 'search#results', as: 'search_results'
+  resources :password_resets, only: [:edit]
 
 end
