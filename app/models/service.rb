@@ -30,11 +30,19 @@ class Service < ActiveRecord::Base
     # Asynchronously make google API call
     location_hash = {}
     similar_service_exists = false
-    get_location_thread = Thread.new { location_hash = Location.create_from_address_lines({line_1: service_data[:address_line_1], city: service_data[:address_city], zip_code: service_data[:zip_code]}) }
+    exceeds_service_count_max = false
+    get_location_thread = Thread.new { location_hash = Location.create_from_address_lines({line_1: service_data[:address_line_1] || '',
+                                                                                           city: service_data[:address_city] || '',
+                                                                                           zip_code: service_data[:zip_code] || ''}) }
 
     # Asynchronously check if service already exists
     check_similar_record_thread = Thread.new do
       similar_service_exists = self.check_for_similar_service(service_data, auth_user)
+    end
+
+    # Async check if user exceeds the amount of allowed services
+    check_service_max_thread = Thread.new do
+      exceeds_service_count_max = self.exceeds_service_count_max?(auth_user)
     end
 
     # Begin transaction to save service, corresponding address and location
@@ -45,7 +53,10 @@ class Service < ActiveRecord::Base
         get_location_thread.join
 
         # Create address
-        address = Address.new({line_1: service_data[:address_line_1], line_2: service_data[:address_line_2], city: service_data[:address_city], zip_code: service_data[:zip_code]})
+        address = Address.new({line_1: service_data[:address_line_1] || '',
+                               line_2: service_data[:address_line_2] || '',
+                               city: service_data[:address_city] || '',
+                               zip_code: service_data[:zip_code] || ''})
 
         # Create location from Google API to save to address
         raise ActiveRecord::Rollback, location_hash[:message] if location_hash[:has_error]
@@ -72,9 +83,16 @@ class Service < ActiveRecord::Base
 
         # Wait for thread checking service uniqueness to finish so we can see if there is already a record
         check_similar_record_thread.join
+
         if similar_service_exists
           # Rollback changes
           raise ActiveRecord::Rollback, "You already have a service with a similar name and/or address. Your services must be unique."
+        end
+
+        # Wait for thread checking service count max
+        check_service_max_thread.join
+        if exceeds_service_count_max
+          raise ActiveRecord::Rollback, "You have reached the maximum amount of services you are allowed to have."
         end
 
       rescue ActiveRecord::RecordInvalid # Catch validation errors
@@ -114,7 +132,7 @@ class Service < ActiveRecord::Base
     services.each do |service|
       similar_name_found = false
       similar_address_found = false
-      similarity_scorer = FuzzyStringMatch::JaroWinkler.create(:native)
+      similarity_scorer = FuzzyStringMatch::JaroWinkler.create(:pure)
       score = similarity_scorer.getDistance(service_data[:name], service.name)
       if score >= 0.85
         similar_name_found = true
@@ -133,5 +151,13 @@ class Service < ActiveRecord::Base
     end
 
     result
+  end
+
+  # Checks to see if the maximum amount of services per user has been reached
+  def self.exceeds_service_count_max?(auth_user)
+    services_per_user = Rails.configuration.x.business['services_per_user']
+    service_count = auth_user.services.size
+
+    service_count >= services_per_user
   end
 end

@@ -10,6 +10,6 @@ class HomeController < ApplicationController
 
   # The main page of the site
   def index
-    @testing = "This is cool"
+
   end
 end

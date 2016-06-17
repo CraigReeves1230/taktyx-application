@@ -16,14 +16,14 @@ class UsersController < ApplicationController
   # Save new user to database
   def do_save_user
 
-    user = User.create(params.require(:user).permit(
-        :first_name,
-        :last_name,
-        :screen_name,
-        :email,
-        :password,
-        :password_confirmation
-    ))
+    user = User.new({
+        first_name: params[:first_name] || '',
+        last_name: params[:last_name] || '',
+        screen_name: params[:screen_name] || '',
+        email: params[:email] || '',
+        password: params[:password] || '',
+        password_confirmation: params[:password_confirmation] || ''
+                    })
 
     # Validation failed, send errors back to page
     if !user.valid?

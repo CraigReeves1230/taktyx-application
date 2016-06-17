@@ -1,0 +1,21 @@
+# Taktyx Business Rules Configuration
+#
+# This file contains business specific rules and configurations for Taktyx
+# @author Christopher Reeves
+# @author Craig Reeves
+
+default: &default
+  services_per_user: 5
+  slogan: Get Things Done
+
+production:
+  site_title: Taktyx
+  <<: *default
+
+development:
+  site_title: Taktyx (Dev)
+  <<: *default
+
+test:
+  site_title: Taktyx (Test)
+  <<: *default

@@ -1,4 +1,4 @@
-<% content_for :title do %>Get Stuff Done<% end %>
+<% content_for :title do %><%= Rails.configuration.x.business['slogan'] %><% end %>
 <div class="container home-index">
   <form data-ng-controller="homeSearchCtrl" data-ng-submit="doSearch($event)" method="get" action="/search">
     <div class="search-section row">
