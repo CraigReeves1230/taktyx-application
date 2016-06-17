@@ -175,7 +175,7 @@ window.taktyx.app.controller('authLoginCtrl', function ($scope, $http, $element)
                 else
                 {
                     // Send user to home page
-                    window.taktyx.killAJAXLoader();
+                    window.taktyx.util.killAJAXLoader();
                     window.location = '/';
                 }
             }, function (errorMsg) {
