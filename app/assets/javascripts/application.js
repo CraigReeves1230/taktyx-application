@@ -4,6 +4,6 @@
 //= require jquery_ujs
 //= require bootstrap
 //= require angular
-//= require globals
+//= require globals.js.erb
 //= require controllers
 //= require_tree .

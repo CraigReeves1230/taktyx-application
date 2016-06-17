@@ -119,9 +119,13 @@ window.taktyx.app.controller('userRegisterCtrl', function ($scope, $element, $ht
                 user: $scope.user
             };
 
+            window.taktyx.util.showAJAXLoader();
+
             // Send information to server
             $http.post('/user/register', post_data)
                 .then(function (msg) {
+
+                    window.taktyx.util.killAJAXLoader();
 
                     // Check for validation errors
                     if(msg.data.has_errors)
@@ -130,6 +134,7 @@ window.taktyx.app.controller('userRegisterCtrl', function ($scope, $element, $ht
                         window.location = '/';
 
                 }, function (errorMsg) {
+                    window.taktyx.util.killAJAXLoader();
                     // TODO: Handle JSON error from AJAX
                 });
         }
@@ -157,6 +162,8 @@ window.taktyx.app.controller('authLoginCtrl', function ($scope, $http, $element)
             authenticity_token: csrf_token,
             auth: $scope.auth
         };
+
+        window.taktyx.util.showAJAXLoader();
         
         // Send information to server
         $http.post('/login', post_data)
@@ -168,9 +175,11 @@ window.taktyx.app.controller('authLoginCtrl', function ($scope, $http, $element)
                 else
                 {
                     // Send user to home page
+                    window.taktyx.killAJAXLoader();
                     window.location = '/';
                 }
             }, function (errorMsg) {
+                window.taktyx.util.killAJAXLoader();
                 // TODO: Handle JSON error from AJAX
             });
     }
@@ -200,8 +209,12 @@ window.taktyx.app.controller('createServiceCtrl', function ($scope, $http, $elem
     $scope.doSubmit = function (e) {
         e.preventDefault();
 
+        window.taktyx.util.showAJAXLoader();
+
         $http.post('/service', {service: $scope.service, authenticity_token: csrf_token})
             .then(function (msg) {
+
+                window.taktyx.util.killAJAXLoader();
 
                 $scope.errors = {};
 
@@ -234,6 +247,7 @@ window.taktyx.app.controller('createServiceCtrl', function ($scope, $http, $elem
                 }
 
             }, function (errorMsg) {
+                window.taktyx.util.killAJAXLoader();
                 // TODO: Handle JSON Error messages
             });
     };
