@@ -6,6 +6,9 @@
  * Controller to handle search on home page
  * @author Christopher Reeves
  */
+
+// TODO: Add time out protection to all AJAX events
+
 window.taktyx.app.controller('homeSearchCtrl', function ($scope) {
 
     // Defaults
@@ -171,5 +174,76 @@ window.taktyx.app.controller('authLoginCtrl', function ($scope, $http, $element)
                 // TODO: Handle JSON error from AJAX
             });
     }
+});
+
+/**
+ * Controller to handle creating services
+ * @author Christopher Reeves
+ */
+window.taktyx.app.controller('createServiceCtrl', function ($scope, $http, $element) {
+
+    // Create list of categories
+    $scope.errors = {};
+    $scope.categories = gon.categories;
+    var csrf_token = $element.data('csrf');
+
+    // Defaults
+    $scope.service = {
+        category: $scope.categories[0],
+        is_published: true,
+        are_ratings_allowed: true,
+        is_sharing_allowed: true,
+        can_receive_takts: true
+    };
+
+    // Handle submitting data to server
+    $scope.doSubmit = function (e) {
+        e.preventDefault();
+
+        $http.post('/service', {service: $scope.service, authenticity_token: csrf_token})
+            .then(function (msg) {
+
+                $scope.errors = {};
+
+                // Handle errors
+                if(msg.data.has_errors)
+                {
+                    // Check for a user not logged in error
+                    if(msg.data.data.unauth)
+                    {
+                        window.location = '/login';
+                    }
+                    else if(msg.data.data.general_error)
+                    {
+                        // TODO: Make this error handling prettier than an alert box
+                        alert(msg.data.data.general_error)
+                    }
+                    else
+                    {
+                        // Display validation errors
+                        $scope.errors = msg.data.data;
+                    }
+                }
+                else
+                {
+                    // The service was created successfully
+                    $(".services-tab").tab('show');
+
+                    // Launch event to update services
+                    $(document).trigger('update-services-list');
+                }
+
+            }, function (errorMsg) {
+                // TODO: Handle JSON Error messages
+            });
+    };
+});
+
+/**
+ * Controller to display services user has
+ * @author Christopher Reeves
+ */
+window.taktyx.app.controller('userServicesListCtrl', function ($scope, $http, $element) {
+    
 });
 
