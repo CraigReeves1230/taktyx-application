@@ -63,9 +63,23 @@ class AuthController < ApplicationController
   def logout
 
     # Delete the session to log the user out
-    forget(auth_user)
+    forget(@auth_user)
     session.clear
     redirect_to :back
+  end
+
+  # Remembers a user in a persistent session. Stores both the id and the token in cookies.
+  def remember(user)
+    user.remember
+    cookies.permanent.signed[:user_id] = user.id
+    cookies.permanent[:remember_token] = user.remember_token
+  end
+
+  # Forgets a user in a persistent session. Removes cookies and the remember_digest
+  def forget(user)
+    user.forget
+    cookies.delete(:user_id)
+    cookies.delete(:remember_token)
   end
 end
 

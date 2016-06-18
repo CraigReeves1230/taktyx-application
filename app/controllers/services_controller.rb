@@ -28,7 +28,8 @@ class ServicesController < ApplicationController
 
     # User must be logged in or authorized to view this page
     if logged_in?
-      render json: Service.save_new(params[:service], auth_user)
+      service = Service.new({})
+      render json: service.save_new(params[:service], @auth_user)
     else
       # User must be logged in to create services
       render json: {:has_error => true, :data => {unauth: true}}

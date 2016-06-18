@@ -168,6 +168,9 @@ window.taktyx.app.controller('authLoginCtrl', function ($scope, $http, $element)
         // Send information to server
         $http.post('/login', post_data)
             .then(function (msg) {
+
+                window.taktyx.util.killAJAXLoader();
+
                 if(msg.data.has_errors)
                 {
                     $scope.errors = msg.data.data;
@@ -175,11 +178,9 @@ window.taktyx.app.controller('authLoginCtrl', function ($scope, $http, $element)
                 else
                 {
                     // Send user to home page
-                    window.taktyx.util.killAJAXLoader();
                     window.location = '/';
                 }
             }, function (errorMsg) {
-                window.taktyx.util.killAJAXLoader();
                 // TODO: Handle JSON error from AJAX
             });
     }
