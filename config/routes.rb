@@ -20,6 +20,8 @@ Rails.application.routes.draw do
   post 'password_resets/update'
   get 'services/index'
 
+  get '/activations/:id/confirm' => 'activations#confirm', as: 'activation_confirm'
+  get '/activation_resend' => 'users#resend_activation', as: 'resend_activation'
   resources :password_resets, only: [:edit]
 
 end

@@ -10,4 +10,10 @@ class UserMailer < ApplicationMailer
     @reset_link = edit_password_reset_url(@user.reset_token, email: @user.email)
     mail to: user.email, subject: "Reset Password"
   end
+
+  def activation_email(user)
+    @user = user
+    @act_link = activation_confirm_url(@user.activation_token, email: @user.email)
+    mail to: user.email, subject: "Account Activation"
+  end
 end
