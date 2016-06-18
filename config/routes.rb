@@ -14,12 +14,10 @@ Rails.application.routes.draw do
   get '/service' => 'services#create_edit', as: 'create_edit_service'
   post '/service' => 'services#do_create', as: 'do_create_service'
 
-  get 'password_resets/new'
-  get 'password_resets/edit'
-  post 'password_resets/create'
-  post 'password_resets/update'
+  get '/password-reset' => 'password_resets#new', as: 'password_resets_new'
+  get '/password-reset/recover/:id/:email' => 'password_resets#edit', as: 'password_resets_edit', constraints: {:email => /[^\/]+/}
+  post '/password-reset' => 'password_resets#create', as: 'password_resets_create'
+  post '/password-reset/complete' => 'password_resets#update', as: 'password_resets_update'
+  post '/password-reset/recover/:id/:email' => 'password_resets#verify_reset', as: 'edit_password_reset', constraints: {:email => /[^\/]+/}
   get 'services/index'
-
-  resources :password_resets, only: [:edit]
-
 end
