@@ -166,7 +166,7 @@ window.taktyx.app.controller('authLoginCtrl', function ($scope, $http, $element)
         window.taktyx.util.showAJAXLoader();
         
         // Send information to server
-        $http.post('/login', post_data)
+        $http.post('', post_data)
             .then(function (msg) {
 
                 window.taktyx.util.killAJAXLoader();
@@ -178,7 +178,7 @@ window.taktyx.app.controller('authLoginCtrl', function ($scope, $http, $element)
                 else
                 {
                     // Send user to home page
-                    window.location = '/';
+                    window.location = msg.data.redirect_path;
                 }
             }, function (errorMsg) {
                 // TODO: Handle JSON error from AJAX

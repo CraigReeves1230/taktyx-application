@@ -15,7 +15,7 @@
 <nav class="top-nav">
   <ul>
     <% if logged_in? %>
-        <li>Hello <%= @auth_user.screen_name %></li>
+        <li>Hello <%= @current_user.screen_name %></li>
         <li><a href="<%= home_path %>"><i class="fa fa-home"></i> Home</a></li>
         <li><a href=""><i class="fa fa-user"></i> My Account</a></li>
         <li><a href="<%= create_edit_service_path %>"><i class="fa fa-suitcase"></i> My Services</a></li>

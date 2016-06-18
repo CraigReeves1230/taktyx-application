@@ -17,12 +17,12 @@ class UsersController < ApplicationController
   def do_save_user
 
     user = User.new({
-        first_name: params[:first_name] || '',
-        last_name: params[:last_name] || '',
-        screen_name: params[:screen_name] || '',
-        email: params[:email] || '',
-        password: params[:password] || '',
-        password_confirmation: params[:password_confirmation] || ''
+        first_name: params[:user][:first_name] || '',
+        last_name: params[:user][:last_name] || '',
+        screen_name: params[:user][:screen_name] || '',
+        email: params[:user][:email] || '',
+        password: params[:user][:password] || '',
+        password_confirmation: params[:user][:password_confirmation] || ''
                     })
 
     # Validation failed, send errors back to page
@@ -36,14 +36,14 @@ class UsersController < ApplicationController
       # Log user in and return user information
       flash[:success] = "Account created! To activate your account, please follow the instructions
                           sent to the email you provided upon sign-up."
-      log_in(user)
+      set_current_user(user)
       render json: {:has_errors => false, :data => user}
     end
   end
 
   def resend_activation
     if logged_in?
-      current_user.send_activation_email
+      @current_user.send_activation_email
       flash[:success] = "Account created! To activate your account, please follow the instructions
                           sent to the email you provided upon sign-up."
       render 'home/index'

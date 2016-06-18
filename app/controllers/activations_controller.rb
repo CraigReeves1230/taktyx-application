@@ -6,7 +6,7 @@ class ActivationsController < ApplicationController
       if @user.token_authenticated?("activation", @token)
         @user.update_attribute(:status, "active")
         @user.update_attribute(:activation_digest, nil)
-        log_in(@user)
+        set_current_user(@user)
         flash.now[:success] = "Your account has now been activated!"
         render 'home/index'
       elsif @user.active?

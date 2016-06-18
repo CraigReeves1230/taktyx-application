@@ -25,7 +25,7 @@ class AuthController < ApplicationController
       user = User.find_by_email params[:auth][:email]
       if user && user.authenticate(params[:auth][:password])
         # Log user in
-        log_in(user)
+        set_current_user(user)
 
         # Remember user if the checkbox is checked
         if params[:auth][:remember]
@@ -34,8 +34,14 @@ class AuthController < ApplicationController
           forget(user)
         end
 
+        # Redirect to previous page
+        redirect_path = '/'
+        if params.has_key?('whence')
+          redirect_path = URI.decode_www_form_component(params['whence'])
+        end
+
         # Authentication success
-        render json: {:has_errors => false, :data => user}
+        render json: {:has_errors => false, :data => user, :redirect_path => redirect_path}
       else
         # Authentication failed
         render json: {:has_errors => true, :data => {:email => ["Email and or password does not match our records"]}}
@@ -63,9 +69,9 @@ class AuthController < ApplicationController
   def logout
 
     # Delete the session to log the user out
-    forget(@auth_user)
+    forget(@current_user)
     session.clear
-    redirect_to :back
+    redirect_to home_path
   end
 
   # Remembers a user in a persistent session. Stores both the id and the token in cookies.
