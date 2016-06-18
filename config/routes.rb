@@ -20,4 +20,9 @@ Rails.application.routes.draw do
   post '/password-reset/complete' => 'password_resets#update', as: 'password_resets_update'
   post '/password-reset/recover/:id/:email' => 'password_resets#verify_reset', as: 'edit_password_reset', constraints: {:email => /[^\/]+/}
   get 'services/index'
+
+  get '/activations/:id/confirm' => 'activations#confirm', as: 'activation_confirm'
+  get '/activation_resend' => 'users#resend_activation', as: 'resend_activation'
+  resources :password_resets, only: [:edit]
+
 end

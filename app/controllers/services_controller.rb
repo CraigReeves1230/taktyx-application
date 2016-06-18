@@ -9,6 +9,9 @@
 #
 class ServicesController < ApplicationController
 
+  # Before filter
+  before_action :verify_activation
+
   # Main page where users would create and view services
   def create_edit
 

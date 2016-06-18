@@ -1,0 +1,11 @@
+<% content_for :title do %>Account Inactive<% end %>
+<h1 style="text-align: center">Account is Inactive</h1>
+
+<p style="text-align: center">Unfortunately, your account is currently inactive.</p>
+
+<% if current_user.status == "inactive" %>
+    <p style="text-align: center">Please follow the instructions sent to your email to activate your account.
+      If you need another activation email sent, <%= link_to "Click Here", resend_activation_path %>.</p>
+<% end %>
+
+<h2 style="text-align: center"><%= link_to "Home", home_url %></h2>

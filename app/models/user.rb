@@ -4,7 +4,7 @@ class User < ActiveRecord::Base
   has_many :services
 
   # Virtual attributes
-  attr_accessor :remember_token, :reset_token
+  attr_accessor :remember_token, :reset_token, :activation_token
 
   # Password and password confirmation authentication (for Bcrypt)
   has_secure_password
@@ -52,9 +52,21 @@ class User < ActiveRecord::Base
     UserMailer.reset_password(self).deliver_now
   end
 
+  # Emails a user their activation email
+  def send_activation_email
+    self.activation_token = User.create_token
+    self.update_attribute(:activation_digest, User.create_digest(self.activation_token))
+    UserMailer.activation_email(self).deliver_now
+  end
+
   # Returns true if the user's reset password link has NOT expired (2 hours)
   def reset_link_still_fresh?
     self.reset_sent_at > 2.hours.ago
+  end
+
+  # Returns true if user is activated
+  def active?
+    self.status == "active"
   end
 
   # Remembers a user by saving the remember token in the remember digest
