@@ -25,7 +25,7 @@ class AuthController < ApplicationController
       user = User.find_by_email params[:auth][:email]
       if user && user.authenticate(params[:auth][:password])
         # Log user in
-        session[:user_id] = user.id
+        log_in(user)
 
         # Remember user if the checkbox is checked
         if params[:auth][:remember]

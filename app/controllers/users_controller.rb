@@ -16,6 +16,7 @@ class UsersController < ApplicationController
   # Save new user to database
   def do_save_user
 
+
     user = User.create(params.require(:user).permit(
         :first_name,
         :last_name,
@@ -27,11 +28,28 @@ class UsersController < ApplicationController
 
     # Validation failed, send errors back to page
     if !user.valid?
+      flash[:danger] = user.errors
       render json: {:has_errors => true, :data => user.errors}
     else
-      # Save session and return user information
-      session[:user_id] = user.id
+      # Send activation email
+      user.send_activation_email
+
+      # Log user in and return user information
+      flash[:success] = "Account created! To activate your account, please follow the instructions
+                          sent to the email you provided upon sign-up."
+      log_in(user)
       render json: {:has_errors => false, :data => user}
+    end
+  end
+
+  def resend_activation
+    if logged_in?
+      current_user.send_activation_email
+      flash[:success] = "Account created! To activate your account, please follow the instructions
+                          sent to the email you provided upon sign-up."
+      render 'home/index'
+    else
+      redirect_to home_url
     end
   end
 

@@ -17,6 +17,9 @@ Rails.application.routes.draw do
   get '/search' => 'search#results', as: 'search_results'
   get '/service' => 'services#create_edit', as: 'create_edit_service'
   post '/service' => 'services#do_create', as: 'do_create_service'
+  get '/activations/:id/confirm' => 'activations#confirm', as: 'activation_confirm'
+  get '/activation_resend' => 'users#resend_activation', as: 'resend_activation'
   resources :password_resets, only: [:edit]
+
 
 end

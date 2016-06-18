@@ -40,6 +40,18 @@ module AuthHelper
     end
   end
 
+  # Logs a user in automatically
+  def log_in(user)
+    session[:user_id] = user.id
+  end
+
+  # Verifies if current user has been activated. Used for before actions that require activation
+  def verify_activation
+    unless current_user.active?
+      render 'activations/email_act_remind'
+    end
+  end
+
   # Remembers a user in a persistent session. Stores both the id and the token in cookies.
   def remember(user)
     user.remember
