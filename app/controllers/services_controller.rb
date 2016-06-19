@@ -11,19 +11,19 @@ class ServicesController < ApplicationController
 
   # Before filter
   before_action :verify_activation
+  before_action :require_logged_in, only: [:create_edit]
 
   # Main page where users would create and view services
   def create_edit
-
-    # User must be logged in or authorized to view this page
-    unless logged_in?
-      redirect_to login_path
-    end
 
     # GON is a GEM that lets us
     # Pass variables to Javascript
     # Load categories to populate view
     gon.categories = Category.all.order :name
+
+    # Find services for user
+    gon.services = @current_user.services.sort_by { |s| s.name }
+    @service_count = @current_user.services.count
   end
 
   # Validates and persists service
@@ -31,7 +31,8 @@ class ServicesController < ApplicationController
 
     # User must be logged in or authorized to view this page
     if logged_in?
-      render json: Service.save_new(params[:service], auth_user)
+      service = Service.new({})
+      render json: service.save_new(params[:service], @current_user)
     else
       # User must be logged in to create services
       render json: {:has_error => true, :data => {unauth: true}}

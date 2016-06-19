@@ -22,7 +22,7 @@ class Service < ActiveRecord::Base
   phony_normalize :phone, default_country_code: 'US'
 
   # Creates and saves a service
-  def self.save_new(service_data, auth_user)
+  def save_new(service_data, service_user)
 
     errors = false
     has_errors = false
@@ -37,12 +37,12 @@ class Service < ActiveRecord::Base
 
     # Asynchronously check if service already exists
     check_similar_record_thread = Thread.new do
-      similar_service_exists = self.check_for_similar_service(service_data, auth_user)
+      similar_service_exists = self.check_for_similar_service(service_data, service_user)
     end
 
     # Async check if user exceeds the amount of allowed services
     check_service_max_thread = Thread.new do
-      exceeds_service_count_max = self.exceeds_service_count_max?(auth_user)
+      exceeds_service_count_max = self.exceeds_service_count_max?(service_user)
     end
 
     # Begin transaction to save service, corresponding address and location
@@ -66,7 +66,7 @@ class Service < ActiveRecord::Base
         address.save!
 
         # Create a new service
-        service = self.new({name: service_data[:name],
+        assign_attributes({name: service_data[:name],
                             description: service_data[:description],
                             keywords: service_data[:keywords],
                             email: service_data[:email],
@@ -76,10 +76,10 @@ class Service < ActiveRecord::Base
                             are_ratings_allowed: service_data[:are_ratings_allowed],
                             can_receive_takts: service_data[:can_receive_takts]})
 
-        service.category = Category.find_by_id(service_data[:category][:id])
-        service.user = auth_user
-        service.address = address
-        service.save!
+        self.category = Category.find_by_id(service_data[:category][:id])
+        self.user = service_user
+        self.address = address
+        self.save!
 
         # Wait for thread checking service uniqueness to finish so we can see if there is already a record
         check_similar_record_thread.join
@@ -100,8 +100,8 @@ class Service < ActiveRecord::Base
         # Collect error variables
         if !address.valid?
           errors = address.errors
-        elsif !service.valid?
-          errors = service.errors
+        elsif !self.valid?
+          errors = self.errors
         end
 
         has_errors = true
@@ -123,12 +123,12 @@ class Service < ActiveRecord::Base
   end
 
   # Checks if a similar service exists for the record
-  def self.check_for_similar_service(service_data, auth_user)
+  def check_for_similar_service(service_data, service_user)
 
     result = false
 
     # Find services by user
-    services = auth_user.services
+    services = service_user.services
     services.each do |service|
       similar_name_found = false
       similar_address_found = false
@@ -154,9 +154,9 @@ class Service < ActiveRecord::Base
   end
 
   # Checks to see if the maximum amount of services per user has been reached
-  def self.exceeds_service_count_max?(auth_user)
+  def exceeds_service_count_max?(service_user)
     services_per_user = Rails.configuration.x.business['services_per_user']
-    service_count = auth_user.services.size
+    service_count = service_user.services.size
 
     service_count >= services_per_user
   end

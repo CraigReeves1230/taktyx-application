@@ -3,7 +3,7 @@
 
 <p style="text-align: center">Unfortunately, your account is currently inactive.</p>
 
-<% if current_user.status == "inactive" %>
+<% if logged_in? && @current_user.status == "inactive" %>
     <p style="text-align: center">Please follow the instructions sent to your email to activate your account.
       If you need another activation email sent, <%= link_to "Click Here", resend_activation_path %>.</p>
 <% end %>

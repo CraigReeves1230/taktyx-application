@@ -1,9 +1,21 @@
 <% content_for :title do %>Forgot Password<% end %>
-<h1 style="text-align: center">Password Reset</h1>
-<div style="text-align: center">
-  <%= form_for(:user, url: password_resets_create_path ) do |f| %>
-    <%= f.label(:email, "Enter your email address") %><br>
-    <%= f.text_field(:email) %>
-    <%= f.submit("Send Email") %>
-  <% end %>
+<div class="container forgot-password">
+  <div class="row">
+    <div class="col-sm-4 col-sm-offset-3">
+      <h1>Password Reset</h1>
+      <p>Enter the email that corresponds to your account and instructions on resetting your password will be sent to you.</p>
+      <%= form_for(:user, url: password_resets_create_path ) do |f| %>
+          <%= f.label(:email, "Enter your email address") %>
+          <div class="form-group">
+          <%= f.text_field(:email, class: "form-control") %>
+          </div>
+          <div class="form-group">
+          <button type="submit" class="btn btn-success"><i class="fa fa-mail-forward"></i> Send Email</button>
+          </div>
+      <% end %>
+    </div>
+  </div>
 </div>
+
+
+

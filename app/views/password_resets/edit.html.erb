@@ -1,17 +1,23 @@
 <% content_for :title do %>New Password<% end %>
-<h1 style="text-align: center">New Password</h1>
-<div style="text-align: center">
+<div class="container new-password-reset">
   <%= form_for(:user, url: password_resets_update_path ) do |f| %>
-
-      <!-- This hidden field is because while the user isn't editing the email here, -->
-      <!-- I need the email for the POST request because that is how the user will be found -->
+  <div class="row">
+    <div class="col-sm-4 col-sm-offset-3">
+      <h1>Create Your New Password</h1>
       <%= f.hidden_field(:email, value: @user.email) %>
-
-      <%= f.label(:password, "Enter your new password") %><br>
-      <%= f.password_field(:password) %><br><br>
-      <%= f.label(:password_confirmation, "Please re-enter your new password") %><br>
-      <%= f.password_field(:password_confirmation) %><br><br>
-      <%= f.submit("Reset Password") %>
+      <%= f.label(:password, "Enter your new password") %>
+      <div class="form-group">
+        <%= f.password_field(:password, class: "form-control") %>
+      </div>
+      <%= f.label(:password_confirmation, "Please re-enter your new password") %>
+      <div class="form-group">
+        <%= f.password_field(:password_confirmation, class: "form-control") %>
+      </div>
+      <div class="form-group">
+        <button type="submit" class="btn btn-success"><i class="fa fa-mail-forward"></i> Save New Password</button>
+      </div>
+    </div>
+  </div>
   <% end %>
 </div>
 
