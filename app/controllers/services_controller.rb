@@ -20,6 +20,10 @@ class ServicesController < ApplicationController
     # Pass variables to Javascript
     # Load categories to populate view
     gon.categories = Category.all.order :name
+
+    # Find services for user
+    gon.services = @current_user.services.sort_by { |s| s.name }
+    @service_count = @current_user.services.count
   end
 
   # Validates and persists service

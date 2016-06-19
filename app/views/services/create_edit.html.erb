@@ -7,7 +7,7 @@
   who are looking for what you offer.</p>
   <ul class="nav nav-tabs">
     <li class="active create-tab"><a data-toggle="tab" href="#create">Create</a></li>
-    <li><a class="services-tab" data-toggle="tab" href="#services">Services (0)</a></li>
+    <li><a class="services-tab" data-toggle="tab" href="#services">Services (<span class="service-count"><%= @service_count %></span>)</a></li>
   </ul>
 
   <!-- Create Tab -->
@@ -103,7 +103,62 @@
 
     <!-- Services Tab -->
     <div data-ng-controller="userServicesListCtrl" class="tab-pane fade" id="services">
-      <p>There are currently no services you're offering.</p>
+      <div class="row top-section">
+        <div class="col-sm-4">
+          <div class="services-list panel panel-default">
+            <div class="panel-heading">My Services</div>
+            <div class="panel-body">
+              <div data-ng-class="($index == 1 ? 'active' : '')" data-ng-repeat="service in user_services" class="panel panel-info service-listing">
+                <div class="panel-body">
+                  <h4><a href="">{{ service.name }}</a></h4>
+                  <div class="button-bar">
+                    <ul>
+                      <li><a href="" class="btn btn-default"><i class="fa fa-eye"></i> View</a></li>
+                      <li><a href="" class="btn btn-success"><i class="fa fa-gear"></i> Edit</a></li>
+                      <li><a href="" class="btn btn-info"><i class="fa fa-hand-stop-o"></i> Go Offline</a></li>
+                      <li><a href="" class="btn btn-danger"><i class="fa fa-close"></i> Delete</a></li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="service-status panel panel-info">
+            <div class="panel-heading">Status</div>
+            <div class="panel-body">
+              <div data-ng-repeat="service in user_services" class="service-status-listing">
+              <h4>{{ service.name }}</h4>
+              <p><i class="fa fa-circle active"></i> Active and open to receiving Takts</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-8">
+          <div class="takt-list panel panel-default">
+            <div class="panel-heading">Takts (Service Number 1)</div>
+            <div class="panel-body">
+              <div class="panel panel-default">
+                <div class="panel-body takt-listing">
+                  <h4>Takt User</h4>
+                  <p class="takt-body">Hey do you guys do delivery?</p>
+                  <p class="takt-date">Sent June 17, 2016 at 2:30pm</p>
+                  <ul class="button-bar">
+                    <li><a class="btn btn-success" href=""><i class="fa fa-comments"></i> Respond</a></li>
+                    <li><a class="btn btn-info" href=""><i class="fa fa-info"></i> Ignore</a></li>
+                    <li><a class="btn btn-danger" href=""><i class="fa fa-ban"></i> Block User</a></li>
+                    <li><a class="btn btn-default" href=""><i class="fa fa-gavel"></i> Report User</a></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12">
+          We'll put something here
+        </div>
+      </div>
     </div>
   </div>
 </div>

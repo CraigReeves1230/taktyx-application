@@ -11,32 +11,32 @@
       <div class="col-sm-6">
         <div data-ng-class="(errors.first_name ? 'has-error' : '')" class="form-group">
           <label>First Name</label>
-          <input maxlength="25" data-ng-model="user.first_name" type="text" class="form-control" placeholder="First Name"/>
+          <input name="first_name" maxlength="25" data-ng-model="user.first_name" type="text" class="form-control" placeholder="First Name"/>
           <span class="control-label" data-ng-bind="errors.first_name[0]"></span>
         </div>
         <div data-ng-class="(errors.last_name ? 'has-error' : '')" class="form-group">
           <label>Last Name</label>
-          <input maxlength="25" data-ng-model="user.last_name" type="text" class="form-control" placeholder="Last Name"/>
+          <input name="last_name" maxlength="25" data-ng-model="user.last_name" type="text" class="form-control" placeholder="Last Name"/>
           <span class="control-label" data-ng-bind="errors.last_name[0]"></span>
         </div>
         <div data-ng-class="(errors.screen_name ? 'has-error' : '')" class="form-group">
           <label>Screen Name</label>
-          <input maxlength="16" data-ng-model="user.screen_name" type="text" class="form-control" placeholder="Screen Name"/>
+          <input name="screen_name" maxlength="16" data-ng-model="user.screen_name" type="text" class="form-control" placeholder="Screen Name"/>
           <span class="control-label" data-ng-bind="errors.screen_name[0]"></span>
         </div>
         <div data-ng-class="(errors.email ? 'has-error' : '')" class="form-group">
           <label>Email</label>
-          <input maxlength="45" data-ng-model="user.email" type="text" class="form-control" placeholder="Email"/>
+          <input name="email" maxlength="45" data-ng-model="user.email" type="text" class="form-control" placeholder="Email"/>
           <span class="control-label" data-ng-bind="errors.email[0]"></span>
         </div>
         <div data-ng-class="(errors.password ? 'has-error' : '')" class="form-group">
           <label>Password</label>
-          <input data-ng-model="user.password" type="password" class="form-control" placeholder="Password"/>
+          <input name="password" data-ng-model="user.password" type="password" class="form-control" placeholder="Password"/>
           <span class="control-label" data-ng-bind="errors.password[0]"></span>
         </div>
         <div data-ng-class="(errors.password_confirmation ? 'has-error' : '')" class="form-group">
           <label>Confirm Password</label>
-          <input data-ng-model="user.password_confirmation" type="password" class="form-control" placeholder="Confirm Password"/>
+          <input name="password_confirmation" data-ng-model="user.password_confirmation" type="password" class="form-control" placeholder="Confirm Password"/>
           <span class="control-label" data-ng-bind="errors.password_confirmation[0]"></span>
         </div>
         <div class="form-group">
