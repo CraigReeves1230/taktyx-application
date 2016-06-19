@@ -47,8 +47,12 @@ module AuthHelper
 
   # Verifies if current user has been activated. Used for before actions that require activation
   def verify_activation
-    unless current_user.active?
-      render 'activations/email_act_remind'
+    unless current_user.active? && logged_in?
+      if logged_in?
+        render 'activations/email_act_remind'
+      else
+        redirect_to home_url
+      end
     end
   end
 
