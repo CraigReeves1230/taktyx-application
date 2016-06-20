@@ -13,6 +13,9 @@ Rails.application.routes.draw do
   get '/search' => 'search#results', as: 'search_results'
   get '/service' => 'services#create_edit', as: 'create_edit_service'
   post '/service' => 'services#do_create', as: 'do_create_service'
+  get '/user/:id/my_account' => 'users#show', as: 'user_profile'
+  get 'user/:id/edit' => 'users#edit', as: 'edit_user'
+  post 'user/:id/update' => 'users#update', as: 'update_user'
 
   get '/password-reset' => 'password_resets#new', as: 'password_resets_new'
   get '/password-reset/recover/:id/:email' => 'password_resets#edit', as: 'password_resets_edit', constraints: {:email => /[^\/]+/}

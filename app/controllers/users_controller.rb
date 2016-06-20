@@ -13,6 +13,28 @@ class UsersController < ApplicationController
 
   end
 
+  def show
+    @user = User.find_by id: params[:id]
+  end
+
+  def update
+    @user = User.find_by_email params[:user][:email]
+    @user.first_name = params[:user][:first_name]
+    @user.last_name = params[:user][:last_name]
+    @user.screen_name = params[:user][:screen_name]
+    if @user.update_attribute(:first_name, @user.first_name) && @user.update_attribute(:last_name, @user.last_name) && @user.update_attribute(:screen_name, @user.screen_name)
+      flash.now[:success] = "Account has been updated!"
+      render 'show'
+    else
+      flash.now[:danger] = "There was a problem updating your account."
+      render 'show'
+    end
+  end
+
+  def edit
+    @user = User.find_by id: params[:id]
+  end
+
   # Save new user to database
   def do_save_user
 

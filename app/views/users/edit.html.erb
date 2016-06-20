@@ -1,0 +1,13 @@
+<% content_for :title do %>Edit Account<% end %>
+    <br><br>
+<%= form_for :user, url: update_user_path(@user) do |f| %>
+    <%= f.label :first_name %><br>
+    <%= f.text_field :first_name %><br><br>
+    <%= f.label :last_name %><br>
+    <%= f.text_field :last_name %><br><br>
+    <%= f.label :screen_name %><br>
+    <%= f.text_field :screen_name %><br><br>
+    <%= f.hidden_field :email, value: @user.email %>
+    <%= f.submit "Submit Update" %><br><br>
+    <%= link_to "Click Here", password_resets_new_url %> to change your password.
+<% end %>
