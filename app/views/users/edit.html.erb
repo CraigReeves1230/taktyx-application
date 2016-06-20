@@ -9,5 +9,6 @@
     <%= f.text_field :screen_name %><br><br>
     <%= f.hidden_field :email, value: @user.email %>
     <%= f.submit "Submit Update" %><br><br>
-    <%= link_to "Click Here", password_resets_new_url %> to change your password.
+    <%= link_to "Click Here", password_resets_new_url %> to change your password.<br>
+    <%= link_to "Click here to delete your account", delete_account_email_url %>
 <% end %>
