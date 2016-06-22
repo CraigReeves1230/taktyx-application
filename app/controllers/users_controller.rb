@@ -42,7 +42,8 @@ class UsersController < ApplicationController
     if @user && @user.token_authenticated?("delete", params[:id]) && @user.delete_link_still_fresh?
       render 'users/confirm_delete_account'
     elsif not @user.token_authenticated?("delete", params[:id])
-      flash.now[:danger] = "The link to delete your account was either expired or recently cancelled."
+      flash.now[:danger] = "The request provided to delete this account was
+                            either cancelled or the link provided in the email has expired."
       render 'home/index'
     elsif @user.nil?
       flash.now[:danger] = "User attempting to be deleted does not exist."
@@ -52,11 +53,11 @@ class UsersController < ApplicationController
 
   def destroy
     if User.exists?(params[:id])
-      User.find.now(params[:id])
+      @user = User.find(params[:id])
       @user.destroy
       redirect_to home_url
     else
-      flash[:danger] = "User attempting to be deleted does not exist."
+      flash.now[:danger] = "User attempting to be deleted does not exist."
       render 'home/index'
     end
   end
