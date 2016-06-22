@@ -8,7 +8,7 @@
       window.taktyx = window.taktyx || {};
       window.taktyx.datalayer = window.taktyx.datalayer || {};
   </script>
-  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag 'application' %>
   <%= csrf_meta_tags %>
 </head>
 <body data-ng-app="app">
@@ -32,4 +32,25 @@
   <%= yield %>
 </section>
 </body>
+<script>
+    window.taktyx.conn = new WebSocket('ws://localhost:5052');
+    window.taktyx.conn.onmessage = function (e) {
+
+      data = JSON.parse(e.data);
+
+      // Handle setting connection id
+      if(data.task == 'connect' && typeof data.connection_id !== 'undefined')
+      {
+        window.taktyx.conn_id = data.connection_id;
+
+        // Send to server information about services user has online
+        window.taktyx.conn.send(JSON.stringify({task: 'providing_info', data: {active_services: gon.user_active_services || []}, conn_id: data.connection_id}));
+      }
+      else if(data.task == 'make_ready')
+      {
+        // Connection is now ready to take messages
+        $(document).trigger('socket-connect-ready');
+      }
+    }
+</script>
 </html>

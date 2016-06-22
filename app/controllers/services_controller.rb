@@ -13,8 +13,17 @@ class ServicesController < ApplicationController
   before_action :verify_activation
   before_action :require_logged_in, only: [:create_edit]
 
+  include ServiceServer
+
   # Main page where users would create and view services
   def create_edit
+
+    # TODO: Move this to a before action
+    if logged_in?
+      if @current_user.services.select {|s| s.is_active }.count > 0
+        gon.user_active_services = @current_user.services.select {|s| s.is_active }
+      end
+    end
 
     # GON is a GEM that lets us
     # Pass variables to Javascript

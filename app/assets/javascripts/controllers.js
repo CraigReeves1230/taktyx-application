@@ -261,6 +261,6 @@ window.taktyx.app.controller('createServiceCtrl', function ($scope, $http, $elem
 window.taktyx.app.controller('userServicesListCtrl', function ($scope, $http, $element) {
 
     $scope.user_services = gon.services;
-
+    
 });
 
