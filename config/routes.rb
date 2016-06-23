@@ -13,6 +13,7 @@ Rails.application.routes.draw do
   get '/search' => 'search#results', as: 'search_results'
   get '/service' => 'services#create_edit', as: 'create_edit_service'
   post '/service' => 'services#do_create', as: 'do_create_service'
+  put '/service/status/:id' => 'services#do_update_status', as: 'do_update_service_status'
 
   get '/password-reset' => 'password_resets#new', as: 'password_resets_new'
   get '/password-reset/recover/:id/:email' => 'password_resets#edit', as: 'password_resets_edit', constraints: {:email => /[^\/]+/}
@@ -23,6 +24,9 @@ Rails.application.routes.draw do
 
   get '/activations/:id/confirm' => 'activations#confirm', as: 'activation_confirm'
   get '/activation_resend' => 'users#resend_activation', as: 'resend_activation'
-  resources :password_resets, only: [:edit]
+
+  post '/messages/create' => 'messages#do_create'
+  get '/messages/fetch' => 'messages#fetch'
+  post '/messages/delete/:id' => 'messages#do_delete'
 
 end

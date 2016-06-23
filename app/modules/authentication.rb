@@ -1,3 +1,9 @@
+# Authentication module
+#
+# Contains several functions used for authentication
+# @author Christopher Reeves
+# @author Craig Reeves
+
 module Authentication
 
   # Get auth user in view
@@ -5,6 +11,7 @@ module Authentication
     # Get the currently logged in user in session
     if session.has_key? :user_id
       @current_user ||= User.find_by_id(session[:user_id])
+      gon.current_user_id = session[:user_id]
       # If no session, look for a remember cookie
     elsif cookies.signed[:user_id]
       temp_user = User.find_by_id(cookies.signed[:user_id])
@@ -17,7 +24,7 @@ module Authentication
 
   # Determines if a user is the current user
   def current_user?(user)
-    check_for_current_user == user
+    @current_user == user
   end
 
   # Determines if a user is logged in
@@ -40,7 +47,7 @@ module Authentication
 
   # Verifies if current user has been activated. Used for before actions that require activation
   def verify_activation
-    if !check_for_current_user.nil? && !check_for_current_user.active?
+    if !@current_user.nil? && !@current_user.active?
       render 'activations/email_act_remind'
     end
   end
