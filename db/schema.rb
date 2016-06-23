@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160618080100) do
+ActiveRecord::Schema.define(version: 20160623091403) do
 
   create_table "addresses", force: :cascade do |t|
     t.string   "line_1",      limit: 255
@@ -106,17 +106,19 @@ ActiveRecord::Schema.define(version: 20160618080100) do
     t.string   "status",              limit: 255
     t.text     "description",         limit: 65535
     t.text     "keywords",            limit: 65535
-    t.datetime "created_at",                                       null: false
-    t.datetime "updated_at",                                       null: false
+    t.datetime "created_at",                                        null: false
+    t.datetime "updated_at",                                        null: false
     t.integer  "category_id",         limit: 4
-    t.string   "email",               limit: 255,                  null: false
-    t.string   "phone",               limit: 255,                  null: false
+    t.string   "email",               limit: 255,                   null: false
+    t.string   "phone",               limit: 255,                   null: false
     t.integer  "user_id",             limit: 4
     t.integer  "address_id",          limit: 4
+    t.boolean  "is_active",                         default: false
   end
 
   add_index "services", ["address_id"], name: "index_services_on_address_id", using: :btree
   add_index "services", ["category_id"], name: "index_services_on_category_id", using: :btree
+  add_index "services", ["is_active"], name: "index_services_on_is_active", using: :btree
   add_index "services", ["user_id"], name: "index_services_on_user_id", using: :btree
 
   create_table "users", force: :cascade do |t|
@@ -134,6 +136,8 @@ ActiveRecord::Schema.define(version: 20160618080100) do
     t.string   "reset_digest",      limit: 255
     t.datetime "reset_sent_at"
     t.string   "activation_digest", limit: 255
+    t.string   "delete_digest",     limit: 255
+    t.datetime "delete_sent_at"
   end
 
   add_foreign_key "addresses", "locations"
