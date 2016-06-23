@@ -16,10 +16,13 @@ gem 'uglifier', '>= 1.3.0'
 # Use CoffeeScript for .coffee assets and views
 gem 'coffee-rails', '~> 4.1.0'
 
+# Gem used to create the event driven socket server
 gem 'eventmachine'
 
+# Assists in connecting web socket connections to event machine
 gem 'em-websocket'
 
+# Messaging service used with Takt server for push notifications
 gem 'ffi-rzmq'
 
 # See https://github.com/rails/execjs#readme for more supported runtimes
