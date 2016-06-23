@@ -260,7 +260,99 @@ window.taktyx.app.controller('createServiceCtrl', function ($scope, $http, $elem
  */
 window.taktyx.app.controller('userServicesListCtrl', function ($scope, $http, $element) {
 
-    $scope.user_services = gon.services;
+    $scope.user_services = gon.user_services;
+
+    if($scope.user_services.length > 0)
+        $scope.selected_service = $scope.user_services[0];
+
+    // Change the service selected and being viewed
+    $scope.doSelectService = function (e, service) {
+        $scope._updateServiceTakts(service);
+        $scope.selected_service = service
+    };
+
+    // Switch online status of service
+    $scope.doToggleOnlineStatus = function (e, service) {
+        
+        // Send request to server
+        $http.put('/service/status/' + service.id, {authenticity_token: $("meta[name='csrf-token']").attr('content')})
+            .then(function (msg) {
+                if (!msg.data.has_errors)
+                {
+                    service.is_active = !service.is_active
+                }
+                else
+                {
+                    alert(msg.data.data);
+                }
+            }, function (errMsg) {
+                // TODO: Handle JSON Error
+            });
+    };
+
+    /**
+     * Open the edit service dialog
+     * @param e
+     */
+    $scope.doOpenEditServiceDialog = function (e) {
+        e.preventDefault();
+        $('.edit-service').modal('show')
+    };
+
+    /**
+     * Delete takt
+     * @param e
+     * @param takt
+     */
+    $scope.doDeleteTakt = function (e, takt) {
+        e.preventDefault();
+        if(confirm("Delete this takt?")) {
+            $http.post('/messages/delete/' + takt.id, {authenticity_token: $("meta[name='csrf-token']").attr('content')})
+                .then(function (msg) {
+                    if(!msg.data.has_errors)
+                    {
+                        $scope._updateServiceTakts($scope.selected_service);
+                    }
+                    else
+                    {
+                        alert(msg.data.data);
+                    }
+                }, function (errMsg) {
+                    // TODO: Handle JSON Error
+                });
+        }
+    };
+
+    /**
+     * Update takts on services
+     * @param service
+     * @private
+     */
+    $scope._updateServiceTakts = function(service)
+    {
+        $http.get('/messages/fetch?service=' + service.id)
+            .then(function (msg) {
+                if(!msg.data.has_error)
+                {
+                    service.takts = msg.data.takts;
+                }
+                else
+                {
+                    alert(msg.data.data);
+                }
+            }, function (errMsg) {
+                // TODO: Handle JSON error
+            });
+    };
     
+    $scope._updateServiceTakts($scope.selected_service);
+
+    // Handle update takts event
+    $(document).on('update-takts', function (e, service_id) {
+       if($scope.selected_service.id == service_id)
+       {
+           $scope._updateServiceTakts($scope.selected_service);
+       }
+    });
 });
 

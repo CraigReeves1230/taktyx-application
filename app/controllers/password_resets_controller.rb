@@ -1,3 +1,11 @@
+# AuthController
+#
+# @author Craig Reeves
+# @copyright (c) 2016 by Taktyx
+
+#
+# This controller handles all actions regarding password resetting
+#
 class PasswordResetsController < ApplicationController
 
   before_action :verify_reset, only: :edit

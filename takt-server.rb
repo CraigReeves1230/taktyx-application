@@ -2,12 +2,77 @@ require 'eventmachine'
 require 'em-websocket'
 require 'json'
 require 'byebug'
+require 'ffi-rzmq'
+require 'to_boolean'
 
+zmq_context = ZMQ::Context.new
+puller = zmq_context.socket(ZMQ::PULL)
+puller.bind("tcp://*:5050")
+
+# TODO: Create a class that represents a client
 clients = {}
 services_online = {}
 
 # Start pusher server
 EM.run {
+
+  EM.tick_loop do
+    zmq_message = ''
+    puller.recv_string(zmq_message, ZMQ::DONTWAIT)
+    if zmq_message != ''
+
+      # Handle different ZMQ push messages here
+
+      parsed_message = JSON.parse(zmq_message)
+      begin
+        case parsed_message['event']
+
+          # Handles when user's online services are being sent
+          when 'services_online_update'
+
+            parsed_message['services_online'].each do |service_data|
+              services_online[service_data['id'].to_s] = service_data
+
+              # Todo: Add connection id to service
+            end
+
+          # Handles when service status is updated
+          when 'update_service_status'
+
+            service_id = parsed_message['service']['id']
+            is_active = parsed_message['service']['is_active'].to_boolean
+
+            if is_active
+              services_online[service_id.to_s] = parsed_message['service']
+            else
+              if services_online.has_key? service_id.to_s
+                services_online.delete service_id.to_s
+              end
+            end
+
+          # Handles sending a takt to a service
+          when 'update_takts_signal'
+
+            recipient_id = parsed_message['recipient_id']
+            if services_online.has_key?(recipient_id.to_s) && clients.count > 0
+
+              # Send message to corresponding web socket connection of service user
+              service_user_id = services_online[recipient_id.to_s]['user_id']
+
+              unless clients.select {|key,value| value[:user_id] == service_user_id}.nil?
+                service_client_connection = clients.select {|key,value| value[:user_id] == service_user_id}.first[1][:conn]
+                service_client_connection.send ({task: 'update_takts_signal', service_id: recipient_id, time: Time.now.utc.to_i}).to_json
+              end
+            end
+
+          else
+            # Ignore message
+        end
+      rescue Exception => ex
+        puts 'Message error: ' << ex.message
+      end
+    end
+  end
 
   # Update services online
   EventMachine::PeriodicTimer.new(4) do
@@ -29,16 +94,12 @@ EM.run {
       clients[client_id] = {conn: conn, status: :initializing}
       conn_data = {task: 'connect', connection_id: client_id}.to_json
       conn.send conn_data
-      puts "Connection opening - id: " << conn.signature.to_s << "\n"
     end
 
     conn.onclose do
-      
-      puts "Connection closing - id: " << conn.signature.to_s << "\n"
 
       # Delete services from online services and then delete the client
       if clients.has_key? conn.signature.to_s
-        puts "Deleting services online"
 
         unless clients[conn.signature.to_s][:services_online].nil?
           clients[conn.signature.to_s][:services_online].collect do |service|
@@ -64,31 +125,21 @@ EM.run {
 
           # The providing_info task populates the client with information regarding services online and ect.
           when 'providing_info'
-            target_client[:services_online] = data['data']['active_services']
 
-            operation = proc do
-              puts "Data is being fetched for " << data['conn_id'] << "\n"
+            target_client[:user_id] = data['user_id']
 
-              # Add services to collection of online services
-              target_client[:services_online].each do |service|
-                services_online[service['id']] = service
+            # Add the client id to online services for the user
+            unless data['user_id'] == 0
+              services_online.each do |key, online_service|
+                if online_service['user_id'].to_s == data['user_id'].to_s
+                  services_online[key]['conn_id'] = conn.signature.to_s
+                end
               end
-
             end
 
-            callback = proc do |res|
-              puts "Data has been retrieved for " << data['conn_id'] << "\n"
-              clients[data['conn_id']][:status] = :ready
-
-              response = {task: 'make_ready'}.to_json
-              clients[data['conn_id']][:conn].send response
-
-              # Print out online services to screen
-              services_online.each {|service_id, service| puts "Service #{service_id}: #{service['name']}\n" }
-              puts "Clients online: " << clients.count.to_s << "\n"
-            end
-
-            EM.defer(operation, callback)
+            target_client[:status] = :ready
+            response = {task: 'make_ready'}.to_json
+            target_client[:conn].send response
 
           else
             # Ignore message

@@ -1,7 +1,7 @@
 /** Global page styling */
 nav.top-nav
 {
-  background-color: #2d6987;
+  background-color: #365b87;
   color: white;
   line-height: 40px;
   padding: 0 10px;
@@ -357,6 +357,8 @@ div.my-services-section
         {
           .takt-listing
           {
+            padding: 10px;
+
             h4
             {
               font-size: 14px;
@@ -404,6 +406,8 @@ div.my-services-section
         {
           .service-listing
           {
+            cursor: pointer;
+
             h4
             {
               margin-top: 0;
@@ -514,6 +518,14 @@ div.my-services-section
           }
         }
       }
+    }
+  }
+
+  .edit-service
+  {
+    .modal-dialog
+    {
+      width: 90%;
     }
   }
 }
