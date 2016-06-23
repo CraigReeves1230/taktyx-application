@@ -15,7 +15,6 @@ default: &default
   pool: 5
   username: taktyx-usr
   password: Rulatia12
-  host: 127.0.0.1
   socket: /tmp/mysql.sock
   host: 107.170.125.208
 
