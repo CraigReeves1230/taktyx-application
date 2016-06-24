@@ -4,8 +4,8 @@
 
 <% if @photos.any? %>
     <% @photos.each do |photo| %>
-        <%= image_tag photo.image.thumb.url %>
-        <%= link_to 'Edit Description', edit_photo_path(photo) %>
+        <%= link_to image_tag(photo.image.thumb.url), photo_path(photo) %>
+        <%= link_to 'Edit', edit_photo_path(photo) %> |
         <%= link_to 'Delete', photo, method: :delete, data: { confirm: 'Are you sure?' } %><br><br>
     <% end %>
 <% end %>

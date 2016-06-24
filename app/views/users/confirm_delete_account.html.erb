@@ -1,0 +1,6 @@
+<% content_for :title do %>Delete Account<% end %>
+<h1>Delete Account</h1>
+<p>Are you sure you want to delete your account?</p>
+<p>This action is irreversable and all services associated with this account will be deleted.</p>
+<h2><%= link_to "Yes, delete this account", user_path(@user), method: :delete %></h2>
+<h2><%= link_to "No, I do not want to delete this account.", cancel_delete_path(@user.id) %></h2>
