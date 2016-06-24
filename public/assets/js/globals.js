@@ -61,7 +61,7 @@ window.taktyx.util.showAJAXLoader = function () {
     var background = $("<div></div>");
     background.addClass('loader-background');
 
-    var element = $("<div><img src='<%= asset_path('squares.gif') %>'/></div>");
+    var element = $("<div><img src='/assets/img/squares.gif'/></div>");
     element.addClass('loader');
 
     $("body").prepend(element).prepend(background);

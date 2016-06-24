@@ -4,13 +4,18 @@
   <title><%= Rails.configuration.x.business['site_title'] %> | <%= yield(:title) %></title>
   <%= include_gon %>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.css" media="all" rel="stylesheet" type="text/css">
-  <%= stylesheet_link_tag 'application', media: 'all' %>
   <script>
       window.taktyx = window.taktyx || {};
       window.taktyx.datalayer = window.taktyx.datalayer || {};
   </script>
-  <%= javascript_include_tag 'application' %>
   <%= csrf_meta_tags %>
+  <link href="/assets/css/bootstrap.min.css" media="all" rel="stylesheet" type="text/css"/>
+  <link href="/assets/css/style.css" media="all" rel="stylesheet" type="text/css"/>
+  <script src="/assets/js/third-party/jquery-3.0.0.min.js"></script>
+  <script src="/assets/js/third-party/bootstrap.js"></script>
+  <script src="/assets/js/third-party/angular.js"></script>
+  <script src="/assets/js/globals.js"></script>
+  <script src="/assets/js/controllers.js"></script>
 </head>
 <body data-ng-app="app">
 <nav class="top-nav">

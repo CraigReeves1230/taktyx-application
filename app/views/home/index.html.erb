@@ -4,7 +4,7 @@
     <div class="search-section row">
       <div class="col-sm-offset-3 col-sm-6">
         <div data-ng-class="(errors.keyword ? 'has-error' : '')" class="form-group">
-          <%= image_tag image_url("logo1.png"), title: 'Taktyx', alt: 'Taktyx' %>
+          <img src="/assets/img/logo1.png" title="Taktyx" alt="Taktyx"/>
           <input data-ng-model="keyword" class="form-control search-input" type="text" placeholder="Search"/>
           <span class="control-label" data-ng-show="(errors.keyword)" data-ng-bind="errors.keyword"></span>
         </div>
