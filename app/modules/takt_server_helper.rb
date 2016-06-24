@@ -44,9 +44,9 @@ module TaktServerHelper
   # Push data to messages server
   def push_to_takt_server(data)
     zmq_context = ZMQ::Context.new
-    socket = zmq_context.socket(ZMQ::PUSH)
-    socket.connect("tcp://localhost:5050")
-    socket.send_string(data.to_json)
-    socket.close
+    zmq_push = zmq_context.socket(ZMQ::PUSH)
+    zmq_push.connect("tcp://localhost:5050")
+    zmq_push.send_string(data.to_json)
+    zmq_push.close
   end
 end

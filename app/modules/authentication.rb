@@ -1,6 +1,7 @@
 # Authentication module
 #
 # Contains several functions used for authentication
+#
 # @author Christopher Reeves
 # @author Craig Reeves
 
