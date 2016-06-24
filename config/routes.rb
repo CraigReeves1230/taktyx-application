@@ -32,5 +32,4 @@ Rails.application.routes.draw do
   resources :password_resets, only: [:edit]
   resources :users, only: [:destroy]
   resources :photos
-
 end
