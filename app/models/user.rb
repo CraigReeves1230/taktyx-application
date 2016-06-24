@@ -2,6 +2,7 @@ class User < ActiveRecord::Base
 
   # Associations
   has_many :services
+  has_many :photos
 
   # Virtual attributes
   attr_accessor :remember_token, :reset_token, :activation_token

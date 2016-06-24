@@ -24,5 +24,6 @@ Rails.application.routes.draw do
   get '/activations/:id/confirm' => 'activations#confirm', as: 'activation_confirm'
   get '/activation_resend' => 'users#resend_activation', as: 'resend_activation'
   resources :password_resets, only: [:edit]
+  resources :photos
 
 end

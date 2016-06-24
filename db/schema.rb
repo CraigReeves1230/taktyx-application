@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160623091403) do
+ActiveRecord::Schema.define(version: 20160624070119) do
 
   create_table "addresses", force: :cascade do |t|
     t.string   "line_1",      limit: 255
@@ -64,6 +64,16 @@ ActiveRecord::Schema.define(version: 20160623091403) do
 
   add_index "messages", ["recipient_id"], name: "index_messages_on_recipient_id", using: :btree
   add_index "messages", ["sender_id"], name: "index_messages_on_sender_id", using: :btree
+
+  create_table "photos", force: :cascade do |t|
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
+    t.string   "description", limit: 255
+    t.string   "image",       limit: 255
+    t.integer  "user_id",     limit: 4
+  end
+
+  add_index "photos", ["user_id"], name: "index_photos_on_user_id", using: :btree
 
   create_table "rel_user_ip_addresses", force: :cascade do |t|
     t.datetime "created_at",              null: false
@@ -141,6 +151,7 @@ ActiveRecord::Schema.define(version: 20160623091403) do
   end
 
   add_foreign_key "addresses", "locations"
+  add_foreign_key "photos", "users"
   add_foreign_key "rel_user_ip_addresses", "ip_addresses"
   add_foreign_key "rel_user_ip_addresses", "users"
   add_foreign_key "service_ratings", "services"
