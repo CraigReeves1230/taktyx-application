@@ -15,4 +15,5 @@
 Gemfile.lock
 .idea
 .byebug_history
+node_modules
 data
