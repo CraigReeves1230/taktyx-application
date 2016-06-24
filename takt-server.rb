@@ -8,7 +8,6 @@
 require 'eventmachine'
 require 'em-websocket'
 require 'json'
-require 'byebug'
 require 'ffi-rzmq'
 require 'to_boolean'
 
