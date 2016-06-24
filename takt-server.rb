@@ -124,6 +124,7 @@ EM.run {
     # For a new connection initialize setup of client
     #
     conn.onopen do
+
       client_id = conn.signature.to_s
       clients_online[client_id] = {conn: conn, status: :initializing}
       conn_data = {task: 'connect', connection_id: client_id}.to_json
@@ -153,8 +154,8 @@ EM.run {
     # Handle various message that come in from the web socket
     #
     conn.onmessage do |msg|
-      data = JSON.parse(msg)
 
+      data = JSON.parse(msg)
       if clients_online.has_key? data['conn_id']
 
         # The connection that the message is coming from
