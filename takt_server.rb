@@ -13,6 +13,11 @@ require 'to_boolean'
 
 class TaktServer
 
+  # Server settings
+  ENDPOINT_IP = '127.0.0.1'
+  PORT = '5052'
+  STORAGE_UPDATE_TIMEOUT = 4
+
   # Start ZMQ messaging server
   def initialize
     @clients_online = {}
@@ -22,7 +27,9 @@ class TaktServer
     @zmq_pull.bind("tcp://*:5050")
   end
 
+  #
   # Starts the server
+  #
   def start
 
     # Start the server loop
@@ -43,7 +50,7 @@ class TaktServer
       # Every 4 seconds, the data regarding the current user services
       # online is saved to a file. This is not ideal and we will later save
       # this information to an in-memory store like Memcached or Redis
-      EventMachine::PeriodicTimer.new(4) do
+      EventMachine::PeriodicTimer.new(STORAGE_UPDATE_TIMEOUT) do
         persist_services_online_data
       end
 
@@ -53,7 +60,7 @@ class TaktServer
       # The websocket server listens on port 5052 for incoming websocket connections.
       # The connections are saved in memory along with a unique connection id so that
       # we can push messages to a connection at anytime.
-      EM::WebSocket.run(:host => "127.0.0.1", :port => 5052) do |ws_connection|
+      EM::WebSocket.run(:host => ENDPOINT_IP, :port => PORT) do |ws_connection|
 
         #
         # For a new connection initialize setup of client
@@ -130,7 +137,9 @@ class TaktServer
     }
   end
 
+  #
   # Handles various types of pushed messages from ZMQ
+  #
   def handle_incoming_zmq_messages
 
     incoming_payload = ''
@@ -190,8 +199,10 @@ class TaktServer
     end
   end
 
+  #
   # Saves information regarding the current user services online
   # to storage
+  #
   def persist_services_online_data
 
     # Because file IO is a blocking process, put this on another thread
