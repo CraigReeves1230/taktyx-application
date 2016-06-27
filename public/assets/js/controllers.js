@@ -187,15 +187,15 @@ window.taktyx.app.controller('authLoginCtrl', function ($scope, $http, $element)
 });
 
 /**
- * Controller to handle creating services
+ * Controller to handle creating and editing services
  * @author Christopher Reeves
  */
-window.taktyx.app.controller('createServiceCtrl', function ($scope, $http, $element) {
+window.taktyx.app.controller('createEditServiceCtrl', function ($scope, $http, $element) {
 
     // Create list of categories
     $scope.errors = {};
     $scope.categories = gon.categories;
-    var csrf_token = $element.data('csrf');
+    var csrf_token = $("meta[name='csrf-token']").attr('content');
 
     // Defaults
     $scope.service = {
@@ -204,6 +204,67 @@ window.taktyx.app.controller('createServiceCtrl', function ($scope, $http, $elem
         are_ratings_allowed: true,
         is_sharing_allowed: true,
         can_receive_takts: true
+    };
+
+    // If this service is being edited, populate service object
+    $($element).on('editing-service', function(e, service) {
+
+        $scope.loading = true;
+
+        $http.get('/service/json/' + service.id)
+            .then(function (msg) {
+                $scope.loading = false;
+                if(!msg.data.has_errors) {
+                    $scope.service = msg.data.service;
+
+                    // Set category
+                    $.each($scope.categories, function (index, category) {
+                        if (service.category_id == category.id) {
+                            $scope.service.category = category;
+                        }
+                    });
+
+                    // Set address values
+                    $scope.service.address_line_1 = msg.data.address.line_1;
+                    $scope.service.address_line_2 = msg.data.address.line_2;
+                    $scope.service.address_city = msg.data.address.city;
+                    $scope.service.zip_code = msg.data.address.zip_code;
+                }
+                else
+                {
+                    alert(msg.data.data);
+                }
+            }, function (msg) {
+                // Todo: Handle JSON error
+            });
+    });
+
+    /**
+     * Update service
+     * @param e
+     */
+    $scope.doUpdate = function (e) {
+        e.preventDefault();
+        $http.put('/service/' + $scope.service.id,  {service: $scope.service, authenticity_token: csrf_token})
+            .then(function (msg) {
+                if(msg.data.has_errors)
+                {
+                    if(msg.data.data.general_error)
+                        alert(msg.data.data.general_error);
+                    else {
+                        // Handle validation errors
+                        $scope.errors = msg.data.data;
+                    }
+                }
+                else
+                {
+                    // Remove popup
+                    $($element).modal('hide');
+                    $(document).trigger('update-services');
+                }
+            }, function (errMsg) {
+                // Todo: Handle JSON error
+            });
     };
 
     // Handle submitting data to server
@@ -258,24 +319,26 @@ window.taktyx.app.controller('createServiceCtrl', function ($scope, $http, $elem
  * Controller to display services user has
  * @author Christopher Reeves
  */
-window.taktyx.app.controller('userServicesListCtrl', function ($scope, $http, $element) {
+window.taktyx.app.controller('userServicesListCtrl', function ($scope, $http) {
 
     $scope.user_services = gon.user_services;
+    var authenticity_token = $("meta[name='csrf-token']").attr('content');
 
-    if($scope.user_services.length > 0)
+    if($scope.user_services.length > 0) {
         $scope.selected_service = $scope.user_services[0];
+    }
 
     // Change the service selected and being viewed
     $scope.doSelectService = function (e, service) {
         $scope._updateServiceTakts(service);
-        $scope.selected_service = service
+        $scope.selected_service = service;
     };
 
     // Switch online status of service
     $scope.doToggleOnlineStatus = function (e, service) {
         
         // Send request to server
-        $http.put('/service/status/' + service.id, {authenticity_token: $("meta[name='csrf-token']").attr('content')})
+        $http.put('/service/status/' + service.id, {authenticity_token: authenticity_token})
             .then(function (msg) {
                 if (!msg.data.has_errors)
                 {
@@ -291,12 +354,34 @@ window.taktyx.app.controller('userServicesListCtrl', function ($scope, $http, $e
     };
 
     /**
+     * Delete service
+     * @param e
+     * @param service
+     */
+    $scope.doDelete = function (e, service) {
+        e.preventDefault();
+
+        if(confirm("Are you sure you want to delete this service?\nAll messages and history will be delete.")) {
+            $http.post('/service/delete/' + service.id, {authenticity_token: authenticity_token})
+                .then(function (msg) {
+                    if (!msg.data.has_errors) {
+                        $(document).trigger('update-services');
+                    }
+                    else {
+                        alert(msg.data.data);
+                    }
+                });
+        }
+    };
+
+    /**
      * Open the edit service dialog
      * @param e
+     * @param service
      */
-    $scope.doOpenEditServiceDialog = function (e) {
+    $scope.doOpenEditServiceDialog = function (e, service) {
         e.preventDefault();
-        $('.edit-service').modal('show')
+        $('.edit-service').modal('show').trigger('editing-service', [service]);
     };
 
     /**
@@ -307,7 +392,7 @@ window.taktyx.app.controller('userServicesListCtrl', function ($scope, $http, $e
     $scope.doDeleteTakt = function (e, takt) {
         e.preventDefault();
         if(confirm("Delete this takt?")) {
-            $http.post('/messages/delete/' + takt.id, {authenticity_token: $("meta[name='csrf-token']").attr('content')})
+            $http.post('/messages/delete/' + takt.id, {authenticity_token: authenticity_token})
                 .then(function (msg) {
                     if(!msg.data.has_errors)
                     {
@@ -346,6 +431,24 @@ window.taktyx.app.controller('userServicesListCtrl', function ($scope, $http, $e
     };
     
     $scope._updateServiceTakts($scope.selected_service);
+
+    /**
+     * Update service list
+     * @private
+     */
+    $scope._updateServiceList = function () {
+        $http.get('/service/json/all')
+            .then(function (msg) {
+                $scope.user_services = msg.data.services;
+            }, function (errMsg) {
+                // TODO: Handle JSON error
+            });
+    };
+
+    // Handle update of services
+    $(document).on('update-services', function () {
+        $scope._updateServiceList();
+    });
 
     // Handle update takts event
     $(document).on('update-takts', function (e, service_id) {

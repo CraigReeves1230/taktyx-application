@@ -19,15 +19,15 @@
           <div class="services-list panel panel-default">
             <div class="panel-heading">My Services</div>
             <div class="panel-body">
-              <div data-ng-click="doSelectService($event, service)" data-ng-class="(service == selected_service ? 'active' : '')" data-ng-repeat="service in user_services" class="panel panel-info service-listing">
+              <div data-ng-cloak data-ng-click="doSelectService($event, service)" data-ng-class="(service == selected_service ? 'active' : '')" data-ng-repeat="service in user_services" class="panel panel-info service-listing">
                 <div class="panel-body">
                   <h4><a href="">{{ service.name }}</a></h4>
                   <div class="button-bar">
                     <ul>
-                      <li><a href="" data-ng-click="doOpenEditServiceDialog($event)" class="btn btn-default"><i class="fa fa-gear"></i> Edit</a></li>
+                      <li><a href="" data-ng-click="doOpenEditServiceDialog($event, service)" class="btn btn-default"><i class="fa fa-gear"></i> Edit</a></li>
                       <li data-ng-click="doToggleOnlineStatus($event, service)" data-ng-show="(service.is_active)"><a href="" class="btn btn-info"><i class="fa fa-hand-stop-o"></i> Go Offline</a></li>
                       <li data-ng-click="doToggleOnlineStatus($event, service)" data-ng-show="(!service.is_active)"><a href="" class="btn btn-success"><i class="fa fa-check"></i> Go Online</a></li>
-                      <li><a href="" class="btn btn-danger"><i class="fa fa-close"></i> Delete</a></li>
+                      <li><a data-ng-click="doDelete($event, service)" href="" class="btn btn-danger"><i class="fa fa-close"></i> Delete</a></li>
                     </ul>
                   </div>
                 </div>
@@ -50,7 +50,7 @@
             <div class="panel-heading">{{ selected_service.name }}</div>
             <div class="panel-body">
               <p data-ng-show="!selected_service.takts || selected_service.takts.length == 0" style="text-align: center; font-size: 15px"><i class="fa fa-info-circle"></i> This service currently has no messages.</p>
-              <div data-ng-repeat="takt in selected_service.takts" class="panel panel-default">
+              <div data-ng-cloak data-ng-repeat="takt in selected_service.takts" class="panel panel-default">
                 <div class="takt-listing">
                   <h4>{{ takt.author_name }}</h4>
                   <p class="takt-body">{{ takt.content }}</p>
@@ -98,7 +98,7 @@
     </div>
 
     <!-- Create Tab -->
-    <div data-csrf="<%= form_authenticity_token %>" data-ng-controller="createServiceCtrl" class="tab-pane fade" id="create">
+    <div data-csrf="<%= form_authenticity_token %>" data-ng-controller="createEditServiceCtrl" class="tab-pane fade" id="create">
       <form data-ng-submit="doSubmit($event)">
         <div class="row">
           <div class="col-sm-6">
@@ -189,14 +189,15 @@
   </div>
 
   <!-- Edit service panel -->
-  <div class="modal fade edit-service">
+  <div data-ng-controller="createEditServiceCtrl" class="modal fade edit-service">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          <h4>Edit Service</h4>
+          <h4><i class="fa fa-cog"></i> Edit Service</h4>
         </div>
         <div class="modal-body">
+          <div data-ng-cloak data-ng-show="!loading">
           <form data-ng-submit="doSubmit($event)">
             <div class="row">
               <div class="col-sm-6">
@@ -277,16 +278,17 @@
                     </ul>
                   </div>
                 </div>
-                <div class="form-group">
-                  <button class="btn btn-success"><i class="fa fa-save"></i> Save Service</button>
-                </div>
               </div>
             </div>
           </form>
+          </div>
+          <div data-ng-cloak data-ng-show="loading">
+            <h4><i class="fa fa-clock-o"></i> Loading...please wait...</h4>
+          </div>
         </div>
         <div class="modal-footer">
           <button class="btn btn-default" type="button" data-dismiss="modal"><i class="fa fa-close"></i> Close</button>
-          <button class="btn btn-success" type="button" data-dismiss="modal"><i class="fa fa-save"></i> Save Changes</button>
+          <button data-ng-click="doUpdate($event)" class="btn btn-success" type="button"><i class="fa fa-save"></i> Save Changes</button>
         </div>
       </div>
     </div>

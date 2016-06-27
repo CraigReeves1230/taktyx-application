@@ -33,14 +33,14 @@ class TaktServer
   def start
 
     # Start the server loop
-    EM.run {
+    EventMachine.run {
 
       # ---------------------------------------------------------------------
       # Server Tick Loop
       # ---------------------------------------------------------------------
       # Every tick of the server loop, check ZMQ for various messages
       # and handle them accordingly
-      EM.tick_loop do
+      EventMachine.tick_loop do
         handle_incoming_zmq_messages
       end
 
@@ -60,7 +60,7 @@ class TaktServer
       # The websocket server listens on port 5052 for incoming websocket connections.
       # The connections are saved in memory along with a unique connection id so that
       # we can push messages to a connection at anytime.
-      EM::WebSocket.run(:host => ENDPOINT_IP, :port => PORT) do |ws_connection|
+      EventMachine::WebSocket.run(:host => ENDPOINT_IP, :port => PORT) do |ws_connection|
 
         #
         # For a new connection initialize setup of client
@@ -217,7 +217,7 @@ class TaktServer
       puts "Error saving data for online services..."
     end
 
-    EM.defer(write_online_services_task, nil, write_online_error)
+    EventMachine.defer(write_online_services_task, nil, write_online_error)
   end
 end
 

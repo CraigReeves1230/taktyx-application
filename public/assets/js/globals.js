@@ -2,6 +2,7 @@
  * Defines global variables
  */
 
+window.taktyx = window.taktyx || {};
 window.taktyx.app = window.taktyx.app || angular.module('app', []);
 
 ///////////////------ Utility Functions ------//////////////////
