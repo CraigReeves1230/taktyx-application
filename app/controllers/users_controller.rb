@@ -51,6 +51,10 @@ class UsersController < ApplicationController
     end
   end
 
+  def index
+    @users = User.all
+  end
+
   def destroy
     if User.exists?(params[:id])
       @user = User.find(params[:id])

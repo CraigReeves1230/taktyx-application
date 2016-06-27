@@ -1,11 +1,7 @@
 class PhotosController < ApplicationController
-  before_action :set_photo, only: [:show, :edit, :update, :destroy]
+  before_action :set_photo, only: [:show, :profile_pic, :edit, :update, :destroy, :photo_large]
   before_action :verify_activation
   before_action :require_logged_in
-
-  def index
-    @photos = @current_user.photos.all
-  end
 
   def show
   end
@@ -22,19 +18,40 @@ class PhotosController < ApplicationController
     if @photo.save
       redirect_to photo_path(@photo)
     else
-      flash.now[:danger] = "Problem uploading image: #{@photo.errors}."
+      flash.now[:danger] = "Problem uploading photo."
       render 'new'
     end
   end
 
+  def index
+    @photos = @current_user.all_photos
+  end
+
+  def profile_pic
+    if @current_user.update_attribute(:profile_pic, @photo.id)
+      redirect_to photos_url
+    else
+      flash.now[:danger] = "There was a problem updating the profile picture."
+      render 'index'
+    end
+  end
+
+  def reject_profile
+    @current_user.update_attribute(:profile_pic, nil)
+    redirect_to photos_url
+  end
+
   def update
-      if @photo.update_attribute(:description, params[:photo][:description])
-        flash.now[:success] = "Photo description successfully updated."
-        render 'show'
-      else
-        flash.now[:danger] = "There was problem updating the photo."
-        render 'show'
-      end
+    if @photo.update_attribute(:description, params[:photo][:description])
+      flash.now[:success] = "Photo description successfully updated."
+      render 'show'
+    else
+      flash.now[:danger] = "There was problem updating the photo."
+      render 'show'
+    end
+  end
+
+  def photo_large
   end
 
 

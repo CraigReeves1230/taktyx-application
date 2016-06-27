@@ -1,7 +1,11 @@
-<p id="notice"><%= notice %></p>
-
-  <%= image_tag @photo.image.url %>
-  <p><%= @photo.description %></p>
+<% content_for :title do %>Photos<% end %>
+<%= display_photo(@photo) %>
+<p><%= @photo.description %></p>
 
 <%= link_to 'Edit', edit_photo_path(@photo) %> |
-<%= link_to 'Back', photos_path %>
+<%= link_to 'Back', photos_path %> |
+<% unless @current_user.profile_pic == @photo.id %>
+    <%= link_to 'Make My Profile Pic', make_profile_pic_path(@photo) %><br><br>
+<% else %>
+    <%= link_to 'Remove as Profile Pic', reject_profile_path(@photo) %><br><br>
+<% end %>

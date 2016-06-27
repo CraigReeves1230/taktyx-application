@@ -1,9 +1,22 @@
-<h1>Editing Photo</h1>
-<%= image_tag @photo.image.thumb.url %><br><br>
-<%= form_for @photo do |f| %>
-    <%= f.label :description %><br>
-    <%= f.text_area :description %><br><br>
-    <%= f.submit "Update Photo" %>
+<% content_for :title do %>Edit Photo<% end %>
+<%= form_for(@photo) do |f| %>
+    <% if @photo.errors.any? %>
+        <div id="error_explanation">
+          <ul>
+            <% @photo.errors.full_messages.each do |message| %>
+                <li style="color:red"><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+    <% end %>
+    <%= display_photo_thumb(@photo) %>
+    <h1>Editing Photo</h1>
+
+    <div class="actions">
+      <%= f.label :description %><br>
+      <%= f.text_area :description %><br><br>
+      <%= f.submit "Update Photo" %>
+    </div>
 <% end %>
 
 <%= link_to 'Back', photos_path %>

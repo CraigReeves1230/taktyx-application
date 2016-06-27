@@ -33,7 +33,7 @@ module Authentication
     end
   end
 
-  # Logs a user in automatically
+  # Logs a user in
   def set_current_user(user)
     session[:user_id] = user.id
   end

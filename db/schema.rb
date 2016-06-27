@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160624070119) do
+ActiveRecord::Schema.define(version: 20160626184223) do
 
   create_table "addresses", force: :cascade do |t|
     t.string   "line_1",      limit: 255
@@ -148,6 +148,7 @@ ActiveRecord::Schema.define(version: 20160624070119) do
     t.string   "activation_digest", limit: 255
     t.string   "delete_digest",     limit: 255
     t.datetime "delete_sent_at"
+    t.integer  "profile_pic",       limit: 4
   end
 
   add_foreign_key "addresses", "locations"

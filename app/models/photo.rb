@@ -1,5 +1,5 @@
 class Photo < ActiveRecord::Base
   mount_uploader :image, ImageUploader
-  belongs_to :user, dependent: :destroy
+  belongs_to :user
 
 end

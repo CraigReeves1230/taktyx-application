@@ -1,0 +1,7 @@
+<% content_for :title do %>Photos<% end %>
+<p><%= link_to 'Edit', edit_photo_path(@photo) %> |
+<%= link_to 'Back', photo_path(@photo) %></p>
+
+<%= display_photo_full(@photo) %>
+
+

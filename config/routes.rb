@@ -26,6 +26,9 @@ Rails.application.routes.draw do
   get 'services/index'
   get '/user/:id/delete_account' => 'users#confirm_delete_account', as: 'delete_account'
   get 'user/delete_account_email' => 'users#delete_account_email', as: 'delete_account_email'
+  get 'photos/:id/full' => 'photos#photo_large', as: 'photo_full'
+  get 'photos/:id/make_profile' => 'photos#profile_pic', as: 'make_profile_pic'
+  get 'photos/:id/reject_profile' => 'photos#reject_profile', as: 'reject_profile'
 
   get '/activations/:id/confirm' => 'activations#confirm', as: 'activation_confirm'
   get '/activation_resend' => 'users#resend_activation', as: 'resend_activation'

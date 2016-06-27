@@ -2,7 +2,7 @@ class User < ActiveRecord::Base
 
   # Associations
   has_many :services, dependent: :destroy
-  has_many :photos
+  has_many :photos, dependent: :destroy
 
   # Virtual attributes
   attr_accessor :remember_token, :reset_token, :activation_token, :delete_token
@@ -61,11 +61,6 @@ class User < ActiveRecord::Base
   end
 
   # Returns true if the user's reset password link has NOT expired (2 hours)
-  def reset_link_still_fresh?
-    self.reset_sent_at > 2.hours.ago
-  end
-
-  # Returns true if the user's reset password link has NOT expired (2 hours)
   def delete_link_still_fresh?
     self.delete_sent_at > 10.minutes.ago
   end
@@ -73,6 +68,11 @@ class User < ActiveRecord::Base
   # Returns true if the user's reset password link has NOT expired (2 hours)
   def reset_link_still_fresh?
     self.reset_sent_at > 2.hours.ago
+  end
+
+  # Returns all of the user's photos
+  def all_photos
+    self.photos.all
   end
 
   # Returns true if user is activated
