@@ -1,0 +1,17 @@
+<h1>Confirm Account Delete</h1>
+<p>Hi, <%= @user.screen_name %>.</p>
+<p>Please click on the following link to confirm deletion of your Taktyx account.<br>
+If you did not intend to delete your account and recieved this email in error, simply<br>
+ignore this email and your account will not be deleted.</p>
+<p>If you do not recall ever requesting for your account to be deleted, we strongly<br>
+advise you to change your password. You can do that be clicking <%= link_to "here", password_resets_new_url %>.</p>
+<p>Please visit the link below to confirm deletion of your account. <strong>This link expires in ten minutes.
+</strong></p>
+
+<%= @delete_link %>
+
+Best,
+The Taktyx Team
+http://www.taktyx.com
+
+

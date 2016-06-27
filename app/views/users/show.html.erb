@@ -1,0 +1,9 @@
+<% content_for :title do %><%= @user.screen_name %><% end %>
+<h1><%= display_profile_pic(@user) %> <%= @user.first_name %> <%= @user.last_name %></h1>
+<p><%= @user.screen_name %><br><%= @user.email %></p>
+
+<%= link_to "Edit", edit_user_path(@user.id) %><br>
+<%= link_to "Click here to delete your account", delete_account_email_url %>
+<br>
+<%= link_to "My Photos/Profile Pic", photos_path  %>
+

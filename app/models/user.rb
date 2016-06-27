@@ -1,10 +1,11 @@
 class User < ActiveRecord::Base
 
   # Associations
-  has_many :services
+  has_many :services, dependent: :destroy
+  has_many :photos, dependent: :destroy
 
   # Virtual attributes
-  attr_accessor :remember_token, :reset_token, :activation_token
+  attr_accessor :remember_token, :reset_token, :activation_token, :delete_token
 
   # Password and password confirmation authentication (for Bcrypt)
   has_secure_password
@@ -60,8 +61,18 @@ class User < ActiveRecord::Base
   end
 
   # Returns true if the user's reset password link has NOT expired (2 hours)
+  def delete_link_still_fresh?
+    self.delete_sent_at > 10.minutes.ago
+  end
+
+  # Returns true if the user's reset password link has NOT expired (2 hours)
   def reset_link_still_fresh?
     self.reset_sent_at > 2.hours.ago
+  end
+
+  # Returns all of the user's photos
+  def all_photos
+    self.photos.all
   end
 
   # Returns true if user is activated
@@ -74,6 +85,14 @@ class User < ActiveRecord::Base
     self.remember_token = User.create_token  # create new token and assign it to remember token
     # update the remember_digest in the database with a B-Crypt hash digest of the remember token
     update_attribute(:remember_digest, User.create_digest(remember_token))
+  end
+
+  # Sends an email to user to confirm deleting your account
+  def send_delete_email
+    self.delete_token = User.create_token
+    update_attribute(:delete_digest, User.create_digest(delete_token))
+    update_attribute(:delete_sent_at, Time.zone.now)
+    UserMailer.delete_email(self).deliver_now
   end
 
   # Forgets a user by removing the remember token in the remember digest

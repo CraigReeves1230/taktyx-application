@@ -7,6 +7,7 @@ class Service < ActiveRecord::Base
   belongs_to :category
   belongs_to :user
   has_many :messages, foreign_key: :recipient_id
+  has_many :photos
 
   # Validation
   validates :user_id, presence: {message: 'The service requires a user'}
