@@ -3,7 +3,7 @@ class Service < ActiveRecord::Base
   require "fuzzystringmatch"
 
   # Associations
-  belongs_to :address
+  has_one :address, as: :addressable
   belongs_to :category
   belongs_to :user
   has_many :messages, foreign_key: :recipient_id
@@ -12,7 +12,6 @@ class Service < ActiveRecord::Base
   # Validation
   validates :user_id, presence: {message: 'The service requires a user'}
   validates :category_id, presence: {message: 'The service requires a category'}
-  validates :address_id, presence: {message: 'The service requires an address'}
   validates :description, presence: {message: 'Services are required to have a description'}
   validates :description, length: {minimum: 40, maximum: 300}
   validates :email, presence: {message: 'The service requires an email'}

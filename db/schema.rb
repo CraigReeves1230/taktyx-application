@@ -11,19 +11,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160626184223) do
+ActiveRecord::Schema.define(version: 20160627215708) do
 
   create_table "addresses", force: :cascade do |t|
-    t.string   "line_1",      limit: 255
-    t.string   "line_2",      limit: 255
-    t.string   "city",        limit: 255
-    t.string   "zip_code",    limit: 255
-    t.datetime "created_at",              null: false
-    t.datetime "updated_at",              null: false
-    t.integer  "location_id", limit: 4
+    t.string   "line_1",           limit: 255
+    t.string   "line_2",           limit: 255
+    t.string   "city",             limit: 255
+    t.string   "zip_code",         limit: 255
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
+    t.string   "addressescol",     limit: 45
+    t.integer  "addressable_id",   limit: 4
+    t.string   "addressable_type", limit: 255
   end
 
-  add_index "addresses", ["location_id"], name: "index_addresses_on_location_id", using: :btree
+  add_index "addresses", ["addressable_type", "addressable_id"], name: "index_addresses_on_addressable_type_and_addressable_id", using: :btree
 
   create_table "categories", force: :cascade do |t|
     t.string   "name",        limit: 255
@@ -35,13 +37,6 @@ ActiveRecord::Schema.define(version: 20160626184223) do
 
   add_index "categories", ["category_id"], name: "index_categories_on_category_id", using: :btree
 
-  create_table "images", force: :cascade do |t|
-    t.string   "desctription", limit: 255
-    t.datetime "created_at",               null: false
-    t.datetime "updated_at",               null: false
-    t.string   "file",         limit: 255
-  end
-
   create_table "ip_addresses", force: :cascade do |t|
     t.string   "address",    limit: 255
     t.datetime "created_at",             null: false
@@ -52,12 +47,15 @@ ActiveRecord::Schema.define(version: 20160626184223) do
   add_index "ip_addresses", ["address"], name: "index_ip_addresses_on_address", using: :btree
 
   create_table "locations", force: :cascade do |t|
-    t.float    "long",       limit: 24
-    t.float    "lat",        limit: 24
-    t.datetime "created_at",            null: false
-    t.datetime "updated_at",            null: false
+    t.float    "long",              limit: 24
+    t.float    "lat",               limit: 24
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
+    t.integer  "locationable_id",   limit: 4
+    t.string   "locationable_type", limit: 255
   end
 
+  add_index "locations", ["locationable_type", "locationable_id"], name: "index_locations_on_locationable_type_and_locationable_id", using: :btree
   add_index "locations", ["long", "lat"], name: "index_locations_on_long_and_lat", using: :btree
 
   create_table "messages", force: :cascade do |t|
@@ -100,17 +98,6 @@ ActiveRecord::Schema.define(version: 20160626184223) do
     t.integer  "service_id", limit: 4
   end
 
-  create_table "rel_user_services", force: :cascade do |t|
-    t.integer  "sort_order", limit: 4, default: 0
-    t.datetime "created_at",                       null: false
-    t.datetime "updated_at",                       null: false
-    t.integer  "user_id",    limit: 4
-    t.integer  "service_id", limit: 4
-  end
-
-  add_index "rel_user_services", ["service_id"], name: "index_rel_user_services_on_service_id", using: :btree
-  add_index "rel_user_services", ["user_id"], name: "index_rel_user_services_on_user_id", using: :btree
-
   create_table "service_ratings", force: :cascade do |t|
     t.float    "score",      limit: 24,    default: 0.0
     t.text     "comment",    limit: 65535
@@ -140,11 +127,9 @@ ActiveRecord::Schema.define(version: 20160626184223) do
     t.string   "email",               limit: 255,                   null: false
     t.string   "phone",               limit: 255,                   null: false
     t.integer  "user_id",             limit: 4
-    t.integer  "address_id",          limit: 4
     t.boolean  "is_active",                         default: false
   end
 
-  add_index "services", ["address_id"], name: "index_services_on_address_id", using: :btree
   add_index "services", ["category_id"], name: "index_services_on_category_id", using: :btree
   add_index "services", ["is_active"], name: "index_services_on_is_active", using: :btree
   add_index "services", ["user_id"], name: "index_services_on_user_id", using: :btree
@@ -169,13 +154,11 @@ ActiveRecord::Schema.define(version: 20160626184223) do
     t.integer  "profile_pic",       limit: 4
   end
 
-  add_foreign_key "addresses", "locations"
   add_foreign_key "photos", "users"
   add_foreign_key "rel_user_ip_addresses", "ip_addresses"
   add_foreign_key "rel_user_ip_addresses", "users"
   add_foreign_key "service_ratings", "services"
   add_foreign_key "service_ratings", "users"
-  add_foreign_key "services", "addresses"
   add_foreign_key "services", "categories"
   add_foreign_key "services", "users"
 end

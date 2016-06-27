@@ -13,13 +13,10 @@ default: &default
   adapter: mysql2
   encoding: utf8
   pool: 5
-  #username: taktyx-usr
-  #password: Rulatia12
+  username: taktyx-usr
+  password: Rulatia12
   socket: /tmp/mysql.sock
-  #host: 107.170.125.208
-  username: user
-  password: user
-  host: 127.0.0.1
+  host: 107.170.125.208
 
 development:
   <<: *default

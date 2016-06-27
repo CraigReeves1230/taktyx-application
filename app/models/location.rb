@@ -1,7 +1,7 @@
 class Location < ActiveRecord::Base
 
   # Associations
-  has_one :address
+  belongs_to :locationable, polymorphic: true
 
   # Create location from address lines
   def self.create_from_address_lines(attributes)
