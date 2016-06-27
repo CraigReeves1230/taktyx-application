@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160620191421) do
+ActiveRecord::Schema.define(version: 20160626184223) do
 
   create_table "addresses", force: :cascade do |t|
     t.string   "line_1",      limit: 255
@@ -34,6 +34,13 @@ ActiveRecord::Schema.define(version: 20160620191421) do
   end
 
   add_index "categories", ["category_id"], name: "index_categories_on_category_id", using: :btree
+
+  create_table "images", force: :cascade do |t|
+    t.string   "desctription", limit: 255
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
+    t.string   "file",         limit: 255
+  end
 
   create_table "ip_addresses", force: :cascade do |t|
     t.string   "address",    limit: 255
@@ -65,6 +72,16 @@ ActiveRecord::Schema.define(version: 20160620191421) do
   add_index "messages", ["recipient_id"], name: "index_messages_on_recipient_id", using: :btree
   add_index "messages", ["sender_id"], name: "index_messages_on_sender_id", using: :btree
 
+  create_table "photos", force: :cascade do |t|
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
+    t.string   "description", limit: 255
+    t.string   "image",       limit: 255
+    t.integer  "user_id",     limit: 4
+  end
+
+  add_index "photos", ["user_id"], name: "index_photos_on_user_id", using: :btree
+
   create_table "rel_user_ip_addresses", force: :cascade do |t|
     t.datetime "created_at",              null: false
     t.datetime "updated_at",              null: false
@@ -82,6 +99,17 @@ ActiveRecord::Schema.define(version: 20160620191421) do
     t.integer  "user_id",    limit: 4
     t.integer  "service_id", limit: 4
   end
+
+  create_table "rel_user_services", force: :cascade do |t|
+    t.integer  "sort_order", limit: 4, default: 0
+    t.datetime "created_at",                       null: false
+    t.datetime "updated_at",                       null: false
+    t.integer  "user_id",    limit: 4
+    t.integer  "service_id", limit: 4
+  end
+
+  add_index "rel_user_services", ["service_id"], name: "index_rel_user_services_on_service_id", using: :btree
+  add_index "rel_user_services", ["user_id"], name: "index_rel_user_services_on_user_id", using: :btree
 
   create_table "service_ratings", force: :cascade do |t|
     t.float    "score",      limit: 24,    default: 0.0
@@ -138,9 +166,11 @@ ActiveRecord::Schema.define(version: 20160620191421) do
     t.string   "activation_digest", limit: 255
     t.string   "delete_digest",     limit: 255
     t.datetime "delete_sent_at"
+    t.integer  "profile_pic",       limit: 4
   end
 
   add_foreign_key "addresses", "locations"
+  add_foreign_key "photos", "users"
   add_foreign_key "rel_user_ip_addresses", "ip_addresses"
   add_foreign_key "rel_user_ip_addresses", "users"
   add_foreign_key "service_ratings", "services"

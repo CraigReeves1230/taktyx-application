@@ -12,6 +12,7 @@
 !/log/.keep
 /tmp
 /vendor
+public/uploads
 Gemfile.lock
 .idea
 .byebug_history

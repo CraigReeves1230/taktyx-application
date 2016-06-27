@@ -46,6 +46,11 @@ GEM
       debug_inspector (>= 0.0.1)
     builder (3.2.2)
     byebug (9.0.5)
+    carrierwave (0.10.0)
+      activemodel (>= 3.2.0)
+      activesupport (>= 3.2.0)
+      json (>= 1.7)
+      mime-types (>= 1.16)
     coderay (1.1.1)
     coffee-rails (4.1.1)
       coffee-script (>= 2.2.0)
@@ -99,6 +104,7 @@ GEM
       mime-types (>= 1.16, < 3)
     method_source (0.8.2)
     mime-types (2.99)
+    mini_magick (4.5.1)
     mini_portile2 (2.0.0)
     minitest (5.9.0)
     multi_json (1.12.1)
@@ -192,6 +198,7 @@ PLATFORMS
 DEPENDENCIES
   bcrypt (~> 3.1.7)
   byebug
+  carrierwave (~> 0.10.0)
   coffee-rails (~> 4.1.0)
   em-websocket
   email_validator
@@ -202,6 +209,7 @@ DEPENDENCIES
   httparty
   jbuilder (~> 2.0)
   jquery-rails
+  mini_magick (~> 4.3)
   mysql2 (>= 0.3.13, < 0.5)
   phony_rails
   pry

@@ -16,4 +16,10 @@ class UserMailer < ApplicationMailer
     @act_link = activation_confirm_url(@user.activation_token, email: @user.email)
     mail to: user.email, subject: "Account Activation"
   end
+
+  def delete_email(user)
+    @user = user
+    @delete_link = delete_account_url(@user.delete_token, email: @user.email)
+    mail to: user.email, subject: "Confirm Delete Account"
+  end
 end
