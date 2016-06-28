@@ -59,6 +59,7 @@ class UsersController < ApplicationController
   def destroy
     if User.exists?(params[:id])
       @user = User.find(params[:id])
+      # Delete user from record
       @user.destroy
       redirect_to home_url
     else

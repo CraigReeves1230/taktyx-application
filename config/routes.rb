@@ -41,7 +41,8 @@ Rails.application.routes.draw do
   post '/messages/create' => 'messages#do_create'
   get '/messages/fetch' => 'messages#fetch'
   post '/messages/delete/:id' => 'messages#do_delete'
+  get 'photos/delete/:id' => 'photos#destroy', as: 'delete_photo'
+  get 'users/delete/:id' => 'users#destroy', as: 'do_delete_user'
 
-  resources :users, only: [:destroy]
-  resources :photos
+  resources :photos, except: [:destroy]
 end

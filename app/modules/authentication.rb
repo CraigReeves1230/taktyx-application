@@ -30,7 +30,7 @@ module Authentication
 
   # Determines if a user is logged in
   def logged_in?
-    !check_for_current_user.nil?
+    !@current_user.nil?
   end
 
   # Require logged in user
@@ -39,6 +39,13 @@ module Authentication
       whence = URI.encode_www_form_component(request.env['REQUEST_PATH'])
       redirect_to login_url({:whence => whence})
     end
+  end
+
+  # Forgets a user in a persistent session. Removes cookies and the remember_digest
+  def forget(user)
+    user.forget
+    cookies.delete(:user_id)
+    cookies.delete(:remember_token)
   end
 
   # Logs a user in
@@ -53,3 +60,4 @@ module Authentication
     end
   end
 end
+

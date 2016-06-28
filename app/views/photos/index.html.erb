@@ -6,7 +6,7 @@
     <% @photos.each do |photo| %>
         <%= display_photo_thumb(photo) %>
         <%= link_to 'Edit', edit_photo_path(photo) %> |
-        <%= link_to 'Delete', photo, method: :delete, data: { confirm: 'Are you sure?' } %> |
+        <%= link_to 'Delete', delete_photo_path(photo) %> |
         <% unless @current_user.profile_pic == photo.id %>
           <%= link_to 'Make My Profile Pic', make_profile_pic_path(photo) %><br><br>
         <% else %>

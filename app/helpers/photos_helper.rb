@@ -19,7 +19,7 @@ module PhotosHelper
   def display_profile_pic(user)
     unless user.profile_pic.nil?
       photo = Photo.find_by_id(user.profile_pic)
-      image_tag(photo.image.avatar.url)
+      image_tag(photo.image.avatar.url) unless photo.nil?
     end
   end
 

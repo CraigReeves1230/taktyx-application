@@ -54,8 +54,11 @@ class PhotosController < ApplicationController
   def photo_large
   end
 
-
   def destroy
+    # Remove photo as a profile pic if it is the avatar
+    if @current_user.profile_pic == @photo.id
+      @current_user.update_attribute(:profile_pic, nil)
+    end
     @photo.destroy
     redirect_to photos_path
   end

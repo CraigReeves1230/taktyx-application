@@ -1,8 +1,6 @@
 module AuthHelper
 
-  # Determines if a user is logged in
-  def logged_in?
-    !@current_user.nil?
-  end
+  # Has to be included here because it also needs to be available in views
+  include Authentication
 
 end

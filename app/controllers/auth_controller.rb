@@ -67,7 +67,6 @@ class AuthController < ApplicationController
 
   # Log user out
   def logout
-
     # Delete the session to log the user out
     forget(@current_user)
     session.clear
@@ -79,13 +78,6 @@ class AuthController < ApplicationController
     user.remember
     cookies.permanent.signed[:user_id] = user.id
     cookies.permanent[:remember_token] = user.remember_token
-  end
-
-  # Forgets a user in a persistent session. Removes cookies and the remember_digest
-  def forget(user)
-    user.forget
-    cookies.delete(:user_id)
-    cookies.delete(:remember_token)
   end
 end
 
