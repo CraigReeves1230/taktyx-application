@@ -15,7 +15,7 @@ cd libzmq
 make check && make install && sudo ldconfig
 apt-get install -y graphicsmagick
 wget http://download.redis.io/releases/redis-3.2.1.tar.gz
+tar xzf redis-3.2.1.tar.gz
+cd redis-3.2.1
+make
 apt-get install -y tcl
-$ tar xzf redis-3.2.1.tar.gz
-$ cd redis-3.2.1
-$ make
