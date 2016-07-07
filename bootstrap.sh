@@ -7,5 +7,10 @@ rvm install 2.2.4
 gem install bundler
 apt-get install -y git
 apt-get install -y cmake
-
-
+apt-get install -y libmysqlclient-dev
+apt-get install -y ruby-mysql libmysqlclient-dev
+git clone https://github.com/zeromq/libzmq
+cd libzmq
+./autogen.sh && ./configure && make -j 4
+make check && make install && sudo ldconfig
+apt-get install -y graphicsmagick
