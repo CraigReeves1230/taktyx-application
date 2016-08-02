@@ -51,5 +51,10 @@ test:
 production:
   <<: *default
   database: taktyx-production
+  adapter: mysql2
+  encoding: utf8
+  pool: 5
   username: taktyx-usr
-  password: <%= ENV['DB_PASSWORD'] %>
+  password: Rulatia12
+  socket: /tmp/mysql.sock
+  host: 107.170.125.208
