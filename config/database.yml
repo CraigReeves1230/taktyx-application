@@ -10,13 +10,13 @@
 #   http://dev.mysql.com/doc/refman/5.0/en/old-client.html
 #
 default: &default
-  adapter: mysql2
   encoding: utf8
   pool: 5
 
 development:
   <<: *default
   database: taktyx-development
+  adapter: mysql2
   host: 107.170.125.208
   username: taktyx-usr
   password: Rulatia12
@@ -51,7 +51,7 @@ test:
 production:
   <<: *default
   database: taktyx-production
+  adapter: postgresql
   username: <%= ENV['TAKTYX-APPLICATION_DATABASE_USER'] %>
   password: <%= ENV['TAKTYX-APPLICATION_DATABASE_PASSWORD'] %>
-  socket: /var/run/mysqld/mysqld.sock
   host: 159.203.188.142
