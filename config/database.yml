@@ -13,14 +13,14 @@ default: &default
   adapter: mysql2
   encoding: utf8
   pool: 5
-  username: taktyx-usr
-  password: Rulatia12
-  socket: /tmp/mysql.sock
-  host: 107.170.125.208
 
 development:
   <<: *default
   database: taktyx-development
+  host: 107.170.125.208
+  username: taktyx-usr
+  password: Rulatia12
+  socket: /tmp/mysql.sock
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
@@ -51,10 +51,7 @@ test:
 production:
   <<: *default
   database: taktyx-production
-  adapter: mysql2
-  encoding: utf8
-  pool: 5
-  username: taktyx-usr
-  password: Rulatia12
-  socket: /tmp/mysql.sock
-  host: 107.170.125.208
+  username: <%= ENV['TAKTYX-APPLICATION_DATABASE_USER'] %>
+  password: <%= ENV['TAKTYX-APPLICATION_DATABASE_PASSWORD'] %>
+  socket: /var/run/mysqld/mysqld.sock
+  host: 159.203.188.142
