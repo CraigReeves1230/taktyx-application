@@ -9,6 +9,7 @@ apt-get install -y git
 apt-get install -y cmake
 apt-get install -y libmysqlclient-dev
 apt-get install -y ruby-mysql libmysqlclient-dev
+sudo apt-get install -y postgresql postgresql-contrib libpq-dev
 git clone https://github.com/zeromq/libzmq
 cd libzmq
 ./autogen.sh && ./configure && make -j 4

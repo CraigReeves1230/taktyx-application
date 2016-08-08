@@ -1,0 +1,4 @@
+=== puma startup: 2016-08-07 23:38:25 +0000 ===
+[24823] * Starting control server on unix:///tmp/puma-status-1470613105951-24823
+[24823] - Worker 1 (pid: 24836) booted, phase: 0
+[24823] - Worker 0 (pid: 24832) booted, phase: 0

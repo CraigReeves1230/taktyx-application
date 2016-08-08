@@ -1,11 +1,16 @@
 source 'https://rubygems.org'
 
+# Bundle Rails
+gem 'rails', '~> 4.2.5'
 
-# Bundle Rails 5 racecar
-gem 'rails', '~> 5.0.0.rc1'
-
-# Use mysql as the database for Active Record
+# MySQL
 gem 'mysql2', '>= 0.3.13', '< 0.5'
+
+# SQLite3
+gem 'sqlite3'
+
+# PostgreSQL
+gem 'pg'
 
 # Use SCSS for css
 gem 'sass-rails', '~> 5.0'
@@ -32,7 +37,6 @@ gem 'ffi-rzmq'
 # See https://github.com/rails/execjs#readme for more supported runtimes
 # gem 'therubyracer', platforms: :ruby
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw]
-gem 'sqlite3'
 
 # Highly useful gem for checkboxes in particular
 gem 'to_boolean', '1.0.2'
@@ -74,8 +78,6 @@ group :development, :test do
 end
 
 group :production do
-  gem 'pg',             '0.17.1'
-  gem 'rails_12factor', '0.0.2'
   gem 'puma'
 end
 
