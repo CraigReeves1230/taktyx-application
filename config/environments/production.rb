@@ -23,7 +23,11 @@ Rails.application.configure do
   # Disable serving static files from the `/public` folder by default since
   # Apache or NGINX already handles this.
   # config.serve_static_files = ENV['RAILS_SERVE_STATIC_FILES'].present?
-  config.serve_static_files = false
+  config.serve_static_files = true
+
+  # Show full error reports and disable caching.
+  #config.consider_all_requests_local       = true
+  #config.action_controller.perform_caching = false
 
   # Compress JavaScripts and CSS.
   config.assets.js_compressor = :uglifier
@@ -35,6 +39,19 @@ Rails.application.configure do
   # Asset digests allow you to set far-future HTTP expiration dates on all assets,
   # yet still be able to expire them through the digest params.
   config.assets.digest = true
+
+  #Set up the mailing method in the production environment
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.default_url_options = {host: "159.203.188.142:3000"}
+  ActionMailer::Base.smtp_settings = {
+      :api_key => "key-048287274b37c75b780bae5a62771c62",
+      :port => 587,
+      :address => "smtp.mailgun.org",
+      :domain => "sandbox054138aa9a2f429898bdf81facaa500d.mailgun.org",
+      :user_name => "postmaster@sandbox054138aa9a2f429898bdf81facaa500d.mailgun.org",
+      :password => "313c025657c8029417cdd17fca7d8ec1",
+      :authentication =>  :plain
+  }
 
   # `config.assets.precompile` and `config.assets.version` have moved to config/initializers/assets.rb
 
