@@ -50,14 +50,16 @@ class User < ActiveRecord::Base
 
   # Emails a user their password reset information
   def email_password_reset_link
-    UserMailer.reset_password(self).deliver_now
+    #UserMailer.reset_password(self).deliver_now
+    ResetPasswordJob.set(wait: 20.seconds).perform_later(self, self.reset_token)
   end
 
   # Emails a user their activation email
   def send_activation_email
     self.activation_token = User.create_token
     self.update_attribute(:activation_digest, User.create_digest(self.activation_token))
-    UserMailer.activation_email(self).deliver_now
+    ActivationEmailJob.set(wait: 20.seconds).perform_later(self, self.activation_token)
+    #UserMailer.activation_email(self).deliver_now
   end
 
   # Returns true if the user's reset password link has NOT expired (2 hours)
@@ -92,7 +94,8 @@ class User < ActiveRecord::Base
     self.delete_token = User.create_token
     update_attribute(:delete_digest, User.create_digest(delete_token))
     update_attribute(:delete_sent_at, Time.zone.now)
-    UserMailer.delete_email(self).deliver_now
+    #UserMailer.delete_email(self).deliver_now
+    DeleteAccountJob.set(wait: 20.seconds).perform_later(self, self.delete_token)
   end
 
   # Forgets a user by removing the remember token in the remember digest

@@ -23,7 +23,7 @@ Rails.application.configure do
   # Disable serving static files from the `/public` folder by default since
   # Apache or NGINX already handles this.
   # config.serve_static_files = ENV['RAILS_SERVE_STATIC_FILES'].present?
-  config.serve_static_files = true
+  config.serve_static_files = false
 
   # Show full error reports and disable caching.
   #config.consider_all_requests_local       = true
@@ -41,15 +41,16 @@ Rails.application.configure do
   config.assets.digest = true
 
   #Set up the mailing method in the production environment
+  config.active_job.queue_adapter = :delayed_job
   config.action_mailer.delivery_method = :smtp
-  config.action_mailer.default_url_options = {host: "159.203.188.142:3000"}
+  config.action_mailer.default_url_options = {host: "159.203.188.142"}
   ActionMailer::Base.smtp_settings = {
-      :api_key => "key-048287274b37c75b780bae5a62771c62",
+      :api_key => ENV['TAKTYX_DATABASE_API_KEY'],
       :port => 587,
-      :address => "smtp.mailgun.org",
-      :domain => "sandbox054138aa9a2f429898bdf81facaa500d.mailgun.org",
-      :user_name => "postmaster@sandbox054138aa9a2f429898bdf81facaa500d.mailgun.org",
-      :password => "313c025657c8029417cdd17fca7d8ec1",
+      :address => ENV['TAKTYX_MAILER_ADDRESS'],
+      :domain => ENV['TAKTYX_MAILER_DOMAIN'],
+      :user_name => ENV['TAKTYX_MAILER_USER'],
+      :password => ENV['TAKTYX_MAILER_PASSWORD'],
       :authentication =>  :plain
   }
 

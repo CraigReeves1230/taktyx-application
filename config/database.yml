@@ -34,8 +34,8 @@ production:
   adapter: postgresql
   host: localhost
   encoding: utf8
-  username: taktyx-usr
-  password: Rulatia8519851812302016
+  username: <%= ENV['TAKTYX_DATABASE_USER'] %>
+  password: <%= ENV['TAKTYX_DATABASE_PASSWORD'] %>
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".

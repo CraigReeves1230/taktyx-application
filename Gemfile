@@ -50,6 +50,9 @@ gem 'jbuilder', '~> 2.0'
 # Gem for connecting to remote addresses
 gem 'httparty'
 
+# Gem for performing jobs
+gem 'delayed_job_active_record'
+
 # Gem for testing if two strings are similar
 gem 'fuzzy-string-match'
 
@@ -87,4 +90,11 @@ group :development do
 
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
+
+  # Install capistrano
+  gem 'capistrano',         require: false
+  gem 'capistrano-rbenv',   require: false
+  gem 'capistrano-rails',   require: false
+  gem 'capistrano-bundler', require: false
+  gem 'capistrano3-puma',   require: false
 end

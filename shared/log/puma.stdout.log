@@ -2,3 +2,37 @@
 [24823] * Starting control server on unix:///tmp/puma-status-1470613105951-24823
 [24823] - Worker 1 (pid: 24836) booted, phase: 0
 [24823] - Worker 0 (pid: 24832) booted, phase: 0
+=== puma startup: 2016-08-10 05:22:19 +0000 ===
+[31918] * Starting control server on unix:///tmp/puma-status-1470806539299-31918
+[31918] - Worker 0 (pid: 31926) booted, phase: 0
+[31918] - Worker 1 (pid: 31930) booted, phase: 0
+
+
+Started GET "/" for 127.0.0.1 at 2016-08-10 05:22:28 +0000
+  [1m[36mActiveRecord::SchemaMigration Load (10.2ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Processing by HomeController#index as HTML
+  [1m[35mUser Load (5.5ms)[0m  SELECT  "users".* FROM "users" WHERE "users"."id" = ? LIMIT 1  [["id", 1]]
+  [1m[36m (5.9ms)[0m  [1mSELECT COUNT(*) FROM "services" WHERE "services"."user_id" = ?[0m  [["user_id", 1]]
+  Rendered home/index.html.erb within layouts/application (14.8ms)
+  Rendered layouts/_flash.html.erb (1.7ms)
+Completed 200 OK in 1186ms (Views: 447.6ms | ActiveRecord: 31.2ms)
+[31918] - Gracefully shutting down workers...
+[31918] === puma shutdown: 2016-08-10 05:23:08 +0000 ===
+[31918] - Goodbye!
+Exiting
+=== puma startup: 2016-08-10 05:25:05 +0000 ===
+[31959] * Starting control server on unix:///tmp/puma-status-1470806705262-31959
+[31959] - Worker 0 (pid: 32028) booted, phase: 0
+[31959] - Worker 1 (pid: 32032) booted, phase: 0
+[31959] - Gracefully shutting down workers...
+[31959] === puma shutdown: 2016-08-10 05:27:37 +0000 ===
+[31959] - Goodbye!
+Exiting
+=== puma startup: 2016-08-10 05:27:57 +0000 ===
+[32053] * Starting control server on unix:///tmp/puma-status-1470806877941-32053
+[32053] - Worker 0 (pid: 32062) booted, phase: 0
+[32053] - Worker 1 (pid: 32066) booted, phase: 0
+[32053] - Gracefully shutting down workers...
+[32053] === puma shutdown: 2016-08-10 05:30:24 +0000 ===
+[32053] - Goodbye!
+Exiting
